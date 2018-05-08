@@ -1,0 +1,15 @@
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class MinionAction : MonoBehaviour
+{
+
+    public void Attack()
+    {
+        GameObject Enermy = this.GetComponentInParent<MinionContol>().Enermy;
+
+        if(Enermy)
+            Enermy.GetComponent<Status>().HP -= this.GetComponentInParent<Status>().ATK;
+    }
+}
