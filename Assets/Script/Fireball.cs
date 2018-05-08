@@ -14,6 +14,7 @@ public class Fireball : MonoBehaviour {
     public GameObject explodeEffect;
 
     protected Rigidbody rgbd;
+    public float ATK;
 
     public void Awake()
     {
@@ -32,9 +33,8 @@ public class Fireball : MonoBehaviour {
     {
         if (Enermy)
         {
-            Vector3 dir = Enermy.transform.position - this.transform.position;
-            dir.Normalize();
-            startDirection = dir;
+            //Vector3 dir = Enermy.transform.position - this.transform.position;
+            //dir.Normalize();
             Push(startDirection, startMagnitude);
 
             if (Vector3.Distance(this.transform.position, Enermy.transform.position) < 0.3f)
@@ -51,8 +51,13 @@ public class Fireball : MonoBehaviour {
                 if (explodeEffect != null)
                     explodeEffect.SetActive(true);
 
+                Enermy.GetComponent<Status>().HP -= ATK;
                 Destroy(this.gameObject);
             }
+        }
+        else
+        {
+            Destroy(this.gameObject);
         }
     }
 
@@ -62,27 +67,6 @@ public class Fireball : MonoBehaviour {
         //rgbd.AddForce(dir * magnitude, forceMode);
         this.transform.Translate(dir * 5.0f * Time.deltaTime);
     }
-
-    //public void OnCollisionEnter(Collision col)
-    //{
-    //    if(col.gameObject == Enermy)
-    //    {
-    //        rgbd.Sleep();
-    //        if (fieryEffect != null)
-    //        {
-    //            StopParticleSystem(fieryEffect);
-    //        }
-    //        if (smokeEffect != null)
-    //        {
-    //            StopParticleSystem(smokeEffect);
-    //        }
-    //        if (explodeEffect != null)
-    //            explodeEffect.SetActive(true);
-
-    //        Destroy(this.gameObject,0.3f);
-    //    }
-        
-    //}
 
     public void StopParticleSystem(GameObject g)
     {

@@ -2,15 +2,23 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MinionGen : MonoBehaviour {
+public class MinionGen : MonoBehaviour
+{
+    public float GenTime = 0;
+    public GameObject Minion;
+    public Transform GenPos;
 
-	// Use this for initialization
-	void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
+    private void Update()
+    {
+        //if(GenTime <=0)
+        //{
+        //    GenTime = 10.0f;
+        //    GameObject GenMinion = Instantiate(Minion, GenPos.position, Quaternion.Euler(new Vector3(0,0,0)));
+        //}
+        //else
+        //{
+        //    GenTime -= Time.deltaTime;
+        //}
+    }
+
 }

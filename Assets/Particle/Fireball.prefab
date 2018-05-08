@@ -139,7 +139,6 @@ GameObject:
   m_Component:
   - component: {fileID: 4177780519598358}
   - component: {fileID: 54575651437447696}
-  - component: {fileID: 135159253773613658}
   - component: {fileID: 114679443110667882}
   m_Layer: 0
   m_Name: Fireball
@@ -324,18 +323,7 @@ MonoBehaviour:
   fieryEffect: {fileID: 1241603014853798}
   smokeEffect: {fileID: 1079906136275330}
   explodeEffect: {fileID: 0}
---- !u!135 &135159253773613658
-SphereCollider:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1844957714444086}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.1
-  m_Center: {x: 0, y: 0, z: 0}
+  ATK: 0
 --- !u!198 &198147004342819348
 ParticleSystem:
   m_ObjectHideFlags: 1
