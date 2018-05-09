@@ -35,7 +35,7 @@ public class MinionContol : MonoBehaviour
         {
             if(this.gameObject.tag == "NaelMinion")
             {
-                if(col.gameObject.tag == "UndeadMinion")
+                if(col.gameObject.tag == "UndeadMinion" || col.gameObject.tag == "UndeadTower")
                 {
                     if(Vector3.Distance(this.transform.position,col.transform.position) < MaxDist)
                     {
@@ -46,7 +46,7 @@ public class MinionContol : MonoBehaviour
             }
             else
             {
-                if(col.gameObject.tag == "NaelMinion")
+                if(col.gameObject.tag == "NaelMinion" || col.gameObject.tag == "NaelTower")
                 {
                     if (Vector3.Distance(this.transform.position, col.transform.position) < MaxDist)
                     {
@@ -56,6 +56,7 @@ public class MinionContol : MonoBehaviour
                 }
             }
         }
+
         if (Enermy)
         {
             SetDest(Enermy.transform.position);
@@ -108,26 +109,12 @@ public class MinionContol : MonoBehaviour
                 NavMesh.isStopped = false;
             }
         }
+        else
+        {
+            SetDest(Dest.transform.position);
+        }
 
     }
-
-    //private void OnTriggerStay(Collider other)
-    //{
-    //    if (!Enermy)
-    //    {
-    //        if (other.tag == "NaelMinion")
-    //        {
-    //            Enermy = other.gameObject;
-    //            SetDest(Enermy.transform.position);
-    //        }
-
-    //        if (other.tag == "UndeadMinion")
-    //        {
-    //            Enermy = other.gameObject;
-    //            SetDest(Enermy.transform.position);
-    //        }
-    //    }
-    //}
 
     private void OnDrawGizmos()
     {

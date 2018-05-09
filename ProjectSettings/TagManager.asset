@@ -8,6 +8,7 @@ TagManager:
   - UndeadMinion
   - UndeadTower
   - NaelTower
+  - Tree
   layers:
   - Default
   - TransparentFX

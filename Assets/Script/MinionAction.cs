@@ -10,6 +10,6 @@ public class MinionAction : MonoBehaviour
         GameObject Enermy = this.GetComponentInParent<MinionContol>().Enermy;
 
         if(Enermy)
-            Enermy.GetComponent<Status>().HP -= this.GetComponentInParent<Status>().ATK;
+            Enermy.GetComponent<Status>().nHP -= this.GetComponentInParent<Status>().ATK;
     }
 }

@@ -33,9 +33,9 @@ public class Fireball : MonoBehaviour {
     {
         if (Enermy)
         {
-            //Vector3 dir = Enermy.transform.position - this.transform.position;
-            //dir.Normalize();
-            Push(startDirection, startMagnitude);
+            Vector3 dir = Enermy.transform.position - this.transform.position;
+            dir.Normalize();
+            Push(dir, startMagnitude);
 
             if (Vector3.Distance(this.transform.position, Enermy.transform.position) < 0.3f)
             {
@@ -51,7 +51,7 @@ public class Fireball : MonoBehaviour {
                 if (explodeEffect != null)
                     explodeEffect.SetActive(true);
 
-                Enermy.GetComponent<Status>().HP -= ATK;
+                Enermy.GetComponent<Status>().nHP -= ATK;
                 Destroy(this.gameObject);
             }
         }

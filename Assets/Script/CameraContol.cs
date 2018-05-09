@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class CameraContol : MonoBehaviour
 {
-    public float CameraSpeed = 4.0f;
+    public float CameraSpeed = 16.0f;
 
     private void Update()
     {

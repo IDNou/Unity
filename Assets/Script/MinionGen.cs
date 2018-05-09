@@ -10,15 +10,15 @@ public class MinionGen : MonoBehaviour
 
     private void Update()
     {
-        //if(GenTime <=0)
-        //{
-        //    GenTime = 10.0f;
-        //    GameObject GenMinion = Instantiate(Minion, GenPos.position, Quaternion.Euler(new Vector3(0,0,0)));
-        //}
-        //else
-        //{
-        //    GenTime -= Time.deltaTime;
-        //}
+        if (GenTime <= 0)
+        {
+            GenTime = 10.0f;
+            GameObject GenMinion = Instantiate(Minion, GenPos.position, Quaternion.Euler(new Vector3(0, 0, 0)));
+        }
+        else
+        {
+            GenTime -= Time.deltaTime;
+        }
     }
 
 }

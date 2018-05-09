@@ -36,26 +36,36 @@ public class PlayerControl : MonoBehaviour
         {
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
+            Debug.DrawRay(Input.mousePosition, ray.direction);
+
             RaycastHit hit;
 
             if (Physics.Raycast(ray, out hit))
             {
-                if (hit.collider.gameObject.tag == "UndeadMinion")
+                print(hit.collider.gameObject.tag);
+
+                if (hit.collider.gameObject.tag == "UndeadMinion" || hit.collider.gameObject.tag == "Tree")
                 {
                     Enermy = hit.collider.gameObject;
-                
-                    if(Vector3.Distance(this.transform.position,Enermy.transform.position) < 3.0f)
+
+                    if (Enermy.GetComponent<Status>().nHP < 0)
+                        Enermy = null;
+
+                    if (Enermy)
                     {
-                        isAttack = true;
-                        this.transform.LookAt(Enermy.transform);
-                        navMesh.ResetPath();
-                    }
-                    else
-                    {
-                        isMove = true;
-                        Dest = Enermy.transform.position;
-                        MoveOrder(Dest);
-                        anim.CrossFade(MOVE.name);
+                        if (Vector3.Distance(this.transform.position, Enermy.transform.position) < 3.0f)
+                        {
+                            isAttack = true;
+                            this.transform.LookAt(Enermy.transform);
+                            navMesh.ResetPath();
+                        }
+                        else
+                        {
+                            isMove = true;
+                            Dest = Enermy.transform.position;
+                            MoveOrder(Dest);
+                            anim.CrossFade(MOVE.name);
+                        }
                     }
                 }
                 else
@@ -138,13 +148,6 @@ public class PlayerControl : MonoBehaviour
     private void MoveOrder(Vector3 dest)
     {
         navMesh.SetDestination(dest);   // 목적지 설정
-    }
-
-    IEnumerator AttackMotion()
-    {
-        anim.CrossFade(ATTACK.name);
-        yield return new WaitForSeconds(ATTACK.length * 2);
-        
     }
 
     private void OnDrawGizmos()

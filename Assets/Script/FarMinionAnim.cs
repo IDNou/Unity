@@ -24,6 +24,7 @@ public class FarMinionAnim : MonoBehaviour
 
         Dest = GameObject.Find("TurnPoint");
         SetDest(Dest.transform.position);
+        //print(this.gameObject.name + Dest.transform.position);
     }
 
     private void Update()
@@ -36,7 +37,7 @@ public class FarMinionAnim : MonoBehaviour
         {
             if (this.gameObject.tag == "NaelMinion")
             {
-                if (col.gameObject.tag == "UndeadMinion")
+                if (col.gameObject.tag == "UndeadMinion" || col.gameObject.tag == "UndeadTower")
                 {
                     if (Vector3.Distance(this.transform.position, col.transform.position) < MaxDist)
                     {
@@ -47,7 +48,7 @@ public class FarMinionAnim : MonoBehaviour
             }
             else
             {
-                if (col.gameObject.tag == "NaelMinion")
+                if (col.gameObject.tag == "NaelMinion" || col.gameObject.tag == "NaelTower")
                 {
                     if (Vector3.Distance(this.transform.position, col.transform.position) < MaxDist)
                     {
