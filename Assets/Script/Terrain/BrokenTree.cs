@@ -9,18 +9,18 @@ public class BrokenTree : MonoBehaviour
 
     private void Update()
     {
-       if(this.GetComponentInParent<Status>().nHP < 0)
-        {
-            if (this.transform.rotation.eulerAngles.x >= 88.5f)
-            {
-                StartCoroutine(fallTree());
-                return;
-            }
-            else
-            {
-                this.transform.Rotate(fallSpeed * Time.deltaTime, 0, 0);
-            }
-        }
+       //if(this.GetComponentInParent<Status>().nHP < 0)
+       // {
+       //     if (this.transform.rotation.eulerAngles.x >= 88.5f)
+       //     {
+       //         StartCoroutine(fallTree());
+       //         return;
+       //     }
+       //     else
+       //     {
+       //         this.transform.Rotate(fallSpeed * Time.deltaTime, 0, 0);
+       //     }
+       // }
     }
 
     IEnumerator fallTree()

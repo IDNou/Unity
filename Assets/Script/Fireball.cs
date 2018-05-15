@@ -51,7 +51,10 @@ public class Fireball : MonoBehaviour {
                 if (explodeEffect != null)
                     explodeEffect.SetActive(true);
 
-                Enermy.GetComponent<Status>().nHP -= ATK;
+                if (Enermy.GetComponent<Status>())
+                {
+                    Enermy.GetComponent<Status>().nHP -= ATK;
+                }
                 Destroy(this.gameObject);
             }
         }
