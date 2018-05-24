@@ -65,6 +65,9 @@ public class PlayerControl : MonoBehaviour
                 ChaingeCursor(false);
                 anim.CrossFade(SKILL1.name);
                 navMesh.ResetPath();
+
+                StartCoroutine(this.GetComponentInChildren<PlayerAction>().StartSkill(1));
+                
             }
             else if(isRainOfFire)
             {
@@ -73,6 +76,8 @@ public class PlayerControl : MonoBehaviour
                 disableIndicator();
                 anim.CrossFade(SKILL1.name);
                 navMesh.ResetPath();
+
+                StartCoroutine(this.GetComponentInChildren<PlayerAction>().StartSkill(2));
             }
             else if(isPowerMeteo)
             {
@@ -81,6 +86,7 @@ public class PlayerControl : MonoBehaviour
                 disableIndicator();
                 anim.CrossFade(SKILL1.name);
                 navMesh.ResetPath();
+                StartCoroutine(this.GetComponentInChildren<PlayerAction>().StartSkill(3));
             }
             else
             {

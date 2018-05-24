@@ -28,6 +28,6 @@ public class FillMode : MonoBehaviour
 
     public void CoolTime()
     {
-       
+        uiSp.fillAmount = 0.0f;
     }
 }
