@@ -52,12 +52,12 @@ public class PlayerAction : MonoBehaviour
         btnPowerMeteo.GetComponentInChildren<FillMode>().CoolTime();
 
         GameObject PowerMeteo = Instantiate(goMeteo);
-        PowerMeteo.transform.position = FirePos.position;
-        PowerMeteo.transform.position = new Vector3(PowerMeteo.transform.position.x, PowerMeteo.transform.position.y + 10, PowerMeteo.transform.position.z);
-        Vector3 dir = this.GetComponentInParent<PlayerControl>().goIndicator.transform.position - FirePos.position;
+        PowerMeteo.transform.position = new Vector3(FirePos.position.x, FirePos.position.y + 10, FirePos.position.z);
+        Vector3 dir = this.GetComponentInParent<PlayerControl>().goIndicator.transform.position - PowerMeteo.transform.position;
         dir.Normalize();
         PowerMeteo.GetComponent<Fireball>().startDirection = dir;
-        PowerMeteo.GetComponent<Fireball>().startMagnitude = 100.0f;
+        PowerMeteo.GetComponent<Fireball>().Destination = this.GetComponentInParent<PlayerControl>().goIndicator.transform.position;
+        PowerMeteo.GetComponent<Fireball>().startMagnitude = 500.0f;
 
         print("PowerMeteo");
     }

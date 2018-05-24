@@ -2,9 +2,11 @@
 using System.Collections;
 
 [RequireComponent(typeof(Rigidbody))]
-public class Fireball : MonoBehaviour {
+public class Fireball : MonoBehaviour
+{
     public bool pushOnAwake = true;
     public Vector3 startDirection;
+    public Vector3 Destination;
     public float startMagnitude;
     public ForceMode forceMode;
 
@@ -29,13 +31,14 @@ public class Fireball : MonoBehaviour {
 
     private void Update()
     {
-        
+        Push(startDirection, startMagnitude);
     }
 
     public void Push(Vector3 direction, float magnitude)
     {
-        Vector3 dir = direction.normalized;
-        rgbd.AddForce(dir * magnitude, forceMode);
+        //Vector3 dir = direction.normalized;
+        //rgbd.AddForce(dir * magnitude, forceMode);
+        this.transform.Translate(direction * 5.0f * Time.deltaTime);
     }
 
     public void OnCollisionEnter(Collision col)
@@ -57,10 +60,10 @@ public class Fireball : MonoBehaviour {
     {
         ParticleSystem[] par;
         par = g.GetComponentsInChildren<ParticleSystem>();
-        foreach(ParticleSystem p in par)
+        foreach (ParticleSystem p in par)
         {
             p.Stop();
-            Destroy(this.gameObject);
+            //Destroy(this.gameObject);
         }
     }
 
@@ -72,6 +75,12 @@ public class Fireball : MonoBehaviour {
             smokeEffect.SetActive(true);
         if (explodeEffect != null)
             explodeEffect.SetActive(false);
+    }
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.red;
+        Gizmos.DrawLine(this.transform.position, Destination);
     }
 }
 
