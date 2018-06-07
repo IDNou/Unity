@@ -18,6 +18,11 @@ public class PlayerControl : MonoBehaviour
     public AnimationClip DEATH;
     public AnimationClip STURN;
 
+    public UIButton btnMeteo;
+    public UIButton btnRainOfFire;
+    public UIButton btnRequidFire;
+    public UIButton btnPowerMeteo;
+
     private Texture2D attackCursorTexture;
     private Texture2D mouseCursorTexture;
     private Vector2 hotSpot;
@@ -27,7 +32,9 @@ public class PlayerControl : MonoBehaviour
     private bool isAttack = false;
     private bool isMove = false;
     private bool isCharge = true;
+    private bool isIndicate = false;
 
+    private bool isBaseAttack = false;
     private bool isMeteo = false;
     private bool isRainOfFire = false;
     private bool isPowerMeteo = false;
@@ -39,12 +46,14 @@ public class PlayerControl : MonoBehaviour
         navMesh = this.GetComponent<NavMeshAgent>();
         anim = this.GetComponentInChildren<Animation>();
         goIndicator.SetActive(false);
-        attackCursorTexture = Resources.Load<Texture2D>("AttackCursor");
+        attackCursorTexture = Resources.Load<Texture2D>("AttackCursor"); // 아마도 게임매니저로 갈뜻?
         mouseCursorTexture = Resources.Load<Texture2D>("MouseCursor");
     }
 
     private void Update()
     {
+        //RayCastingEnermy(); 좀더 손좀봐야할뜻
+
         if (Input.GetKeyDown(KeyCode.Mouse1))
         {
             RayCastingToDiscriminate();
@@ -60,17 +69,55 @@ public class PlayerControl : MonoBehaviour
             }
             else if(isMeteo)
             {
-                // 먼저 레이캐스팅을 해서 적이 타게팅 됬는지 파악해야함
-                isMeteo = false;
-                ChaingeCursor(false);
-                anim.CrossFade(SKILL1.name);
-                navMesh.ResetPath();
+                Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
-                StartCoroutine(this.GetComponentInChildren<PlayerAction>().StartSkill(1));
+                RaycastHit hit;
+
+                if (Physics.Raycast(ray, out hit))
+                {
+                    if(hit.collider.gameObject.tag == "UndeadMinion")
+                    {
+                        Enermy = hit.collider.gameObject;
+
+                        //if (Enermy.GetComponent<Status>() && Enermy.GetComponent<Status>().nHP < 0)
+                        //    Enermy = null;
+
+                        if (Enermy)
+                        {
+                            if (Vector3.Distance(this.transform.position, Enermy.transform.position) < 5.0f)
+                            {
+                                this.transform.LookAt(Enermy.transform);
+                                navMesh.ResetPath();
+
+                                isMove = false;
+                                isMeteo = false;
+                                ChaingeCursor(false);
+                                anim.CrossFade(SKILL1.name);
+                                //navMesh.ResetPath();
+
+
+                                btnMeteo.GetComponentInChildren<FillMode>().SetCoolTime();
+                                StartCoroutine(this.GetComponentInChildren<PlayerAction>().StartSkill(1));
+                            }
+                            else
+                            {
+                                isMove = true;
+                                Dest = Enermy.transform.position;
+                                MoveOrder(Dest);
+                                anim.CrossFade(MOVE.name);
+                            }
+                        }
+                    }
+                    else
+                    {
+                        ChaingeCursor(false);
+                    }
+                }
                 
             }
             else if(isRainOfFire)
             {
+                isIndicate = false;
                 isRainOfFire = false;
                 ChaingeCursor(false);
                 disableIndicator();
@@ -81,12 +128,28 @@ public class PlayerControl : MonoBehaviour
             }
             else if(isPowerMeteo)
             {
-                isPowerMeteo = false;
-                ChaingeCursor(false);
-                disableIndicator();
-                anim.CrossFade(SKILL1.name);
-                navMesh.ResetPath();
-                StartCoroutine(this.GetComponentInChildren<PlayerAction>().StartSkill(3));
+                isIndicate = false;
+                if (Vector3.Distance(this.transform.position, goIndicator.transform.position) < 5.0f)
+                {
+                    isPowerMeteo = false;
+                    ChaingeCursor(false);
+                    disableIndicator();
+                    anim.CrossFade(SKILL1.name);
+                    navMesh.ResetPath();
+
+                    btnPowerMeteo.GetComponentInChildren<FillMode>().SetCoolTime();
+                    StartCoroutine(this.GetComponentInChildren<PlayerAction>().StartSkill(3));
+                }
+                else
+                {
+                    isMove = true;
+                    Dest = goIndicator.transform.position;
+                    MoveOrder(Dest);
+                    anim.CrossFade(MOVE.name);
+
+                    ChaingeCursor(false);
+                    disableIndicator();
+                }
             }
             else
             {
@@ -95,53 +158,85 @@ public class PlayerControl : MonoBehaviour
         }
         else if(Input.GetKeyDown(KeyCode.A))
         {
+            isAttack = false;
+
             isAttackCursor = true;
             ChaingeCursor(true);
         }
-        else if(Input.GetKeyDown(KeyCode.T)) //메테오
+        else if(btnMeteo.GetComponentInChildren<FillMode>().AbleSkil() && Input.GetKeyDown(KeyCode.T)) //메테오
         {
+            isAttack = false;
+
             isMeteo = true;
             ChaingeCursor(true);
         }
-        else if(Input.GetKeyDown(KeyCode.F)) // 레인파이어
+        else if(btnRequidFire.GetComponentInChildren<FillMode>().AbleSkil() && Input.GetKeyDown(KeyCode.F)) // 레인파이어
         {
+            isAttack = false;
+            isIndicate = true;
             isRainOfFire = true;
-           
         }
-        else if(Input.GetKeyDown(KeyCode.W)) // 팜
+        else if(btnPowerMeteo.GetComponentInChildren<FillMode>().AbleSkil() && Input.GetKeyDown(KeyCode.W)) // 팜
         {
+            isAttack = false;
+            isIndicate = true;
             isPowerMeteo = true;
         }
 
         if (Enermy)
         {
-            if (Vector3.Distance(this.transform.position, Enermy.transform.position) < 3.0f)
-            {
-                isAttack = true;
-                this.transform.LookAt(Enermy.transform);
-                navMesh.ResetPath();
-            }
-            else
-            {
-                isMove = true;
-                Dest = Enermy.transform.position;
-                MoveOrder(Dest);
-                anim.CrossFade(MOVE.name);
-            }
+            //if (Vector3.Distance(this.transform.position, Enermy.transform.position) < 3.0f)
+            //{
+            //    isAttack = true;
+            //    this.transform.LookAt(Enermy.transform);
+            //    navMesh.ResetPath();
+            //}
+            //else
+            //{
+            //    isMove = true;
+            //    Dest = Enermy.transform.position;
+            //    MoveOrder(Dest);
+            //    anim.CrossFade(MOVE.name);
+            //}
 
             if (isMove)
             {
                 Dest = Enermy.transform.position;
                 MoveOrder(Dest);
 
-                if (Vector3.Distance(this.transform.position, Enermy.transform.position) < 3.0f)
+              
+                if (isBaseAttack)
                 {
-                    isMove = false;
-                    isAttack = true;
-                    this.transform.LookAt(Enermy.transform);
-                    navMesh.ResetPath();
+                    if (Vector3.Distance(this.transform.position, Enermy.transform.position) < 3.0f)
+                    {
+                        isMove = false;
+                        isBaseAttack = false;
+                        isAttack = true;
+
+                        this.transform.LookAt(Enermy.transform);
+                        navMesh.ResetPath();
+                    }
                 }
+                else if(isMeteo)
+                {
+                    if (Vector3.Distance(this.transform.position, Enermy.transform.position) < 5.0f)
+                    {
+                        isMove = false;
+                        isMeteo = false;
+                        ChaingeCursor(false);
+                        anim.CrossFade(SKILL1.name);
+                        navMesh.ResetPath();
+
+                        btnMeteo.GetComponentInChildren<FillMode>().SetCoolTime();
+                        StartCoroutine(this.GetComponentInChildren<PlayerAction>().StartSkill(1));
+
+                        this.transform.LookAt(Enermy.transform);
+                        navMesh.ResetPath();
+                    }
+                }
+
             }
+           
 
             if (isAttack)
             {
@@ -149,7 +244,7 @@ public class PlayerControl : MonoBehaviour
                 {
                     isCharge = false;
                     animDelay = ATTACK.length * 2.0f;
-                    anim.CrossFade(ATTACK.name);
+                    anim.CrossFade(ATTACK.name); // 발사
                 }
             }
 
@@ -157,6 +252,27 @@ public class PlayerControl : MonoBehaviour
             {
                 anim.CrossFade(IDLE.name);
                 Enermy = null;
+            }
+        }
+        else
+        {
+            if (isPowerMeteo && !isIndicate)
+            {
+                if (Vector3.Distance(this.transform.position, goIndicator.transform.position) < 5.0f)
+                {
+                    isMove = false;
+                    isPowerMeteo = false;
+                    ChaingeCursor(false);
+                    disableIndicator();
+                    anim.CrossFade(SKILL1.name);
+                    navMesh.ResetPath();
+
+                    btnPowerMeteo.GetComponentInChildren<FillMode>().SetCoolTime();
+                    StartCoroutine(this.GetComponentInChildren<PlayerAction>().StartSkill(3));
+
+                    this.transform.LookAt(goIndicator.transform);
+                    navMesh.ResetPath();
+                }
             }
         }
 
@@ -175,11 +291,30 @@ public class PlayerControl : MonoBehaviour
         }
     }
 
-    private void LateUpdate()
+    private void FixedUpdate()
     {
-        if (isRainOfFire || isPowerMeteo)
+        if (isIndicate)
         {
             enabledIndicator();
+        }
+    }
+
+    private void RayCastingEnermy()
+    {
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+
+        RaycastHit hit;
+
+        if (Physics.Raycast(ray, out hit))
+        {
+            if (hit.collider.gameObject.tag == "UndeadMinion")//|| hit.collider.gameObject.tag == "Tree")
+            {
+                ChaingeCursor(true);
+            }
+            else
+            {
+                ChaingeCursor(false);
+            }
         }
     }
 
@@ -191,12 +326,9 @@ public class PlayerControl : MonoBehaviour
 
         if (Physics.Raycast(ray, out hit))
         {
-            print(hit.collider.name);
-            if (hit.collider.gameObject.tag == "UndeadMinion")//|| hit.collider.gameObject.tag == "Tree")
+            if (hit.collider.gameObject.tag == "UndeadMinion" || hit.collider.gameObject.tag == "UndeadTower")//|| hit.collider.gameObject.tag == "Tree")
             {
-                ChaingeCursor(true);
-
-                 Enermy = hit.collider.gameObject;
+                Enermy = hit.collider.gameObject;
 
                 if (Enermy.GetComponent<Status>() && Enermy.GetComponent<Status>().nHP < 0)
                     Enermy = null;
@@ -206,12 +338,14 @@ public class PlayerControl : MonoBehaviour
                     if (Vector3.Distance(this.transform.position, Enermy.transform.position) < 3.0f)
                     {
                         isAttack = true;
+                        isMove = false;
                         this.transform.LookAt(Enermy.transform);
                         navMesh.ResetPath();
                     }
                     else
                     {
                         isMove = true;
+                        isBaseAttack = true;
                         Dest = Enermy.transform.position;
                         MoveOrder(Dest);
                         anim.CrossFade(MOVE.name);
@@ -220,8 +354,16 @@ public class PlayerControl : MonoBehaviour
             }
             else
             {
+                isIndicate = false;
+                disableIndicator();
+                isAttackCursor = false;
+                isMeteo = false;
+                isPowerMeteo = false;
+                ChaingeCursor(false);
+
                 Dest = hit.point;
                 isMove = true;
+                isAttack = false;
                 Enermy = null;
                 MoveOrder(Dest);
                 anim.CrossFade(MOVE.name);

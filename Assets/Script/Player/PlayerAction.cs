@@ -8,11 +8,6 @@ public class PlayerAction : MonoBehaviour
     public GameObject FireBall;
     public GameObject goMeteo;
 
-    public UIButton btnMeteo;
-    public UIButton btnRainOfFire;
-    public UIButton btnRequidFire;
-    public UIButton btnPowerMeteo;
-
     private void Awake()
     {
         
@@ -27,39 +22,41 @@ public class PlayerAction : MonoBehaviour
             Vector3 dir = this.GetComponentInParent<PlayerControl>().Enermy.transform.position - FirePos.position;
             dir.Normalize();
             baseAttack.GetComponent<Attack>().startDirection = dir;
-            baseAttack.GetComponent<Attack>().startMagnitude = 100.0f;
-            baseAttack.GetComponent<Attack>().ATK = 20.0f;
+            baseAttack.GetComponent<Attack>().fSpeed = 5.0f;
+            baseAttack.GetComponent<Attack>().ATK = this.GetComponentInParent<Status>().ATK; // 공격력 표기를 어디다가 해야할지 결정해야할뜻
             baseAttack.GetComponent<Attack>().Enermy = this.GetComponentInParent<PlayerControl>().Enermy;
         }
     }
 
     private void Meteo()
     {
-        btnMeteo.GetComponentInChildren<FillMode>().CoolTime();
-        print("Meteo");
+        GameObject Meteo = Instantiate(FireBall);
+        Meteo.transform.position = new Vector3(FirePos.position.x, FirePos.position.y + 10, FirePos.position.z);
+        Vector3 dir = this.GetComponentInParent<PlayerControl>().Enermy.transform.position - Meteo.transform.position;
+        dir.Normalize();
+        Meteo.GetComponent<Attack>().startDirection = dir;
+        Meteo.GetComponent<Attack>().fSpeed = 10.0f;
+        Meteo.GetComponent<Attack>().ATK = 100.0f;
+        Meteo.GetComponent<Attack>().Enermy = this.GetComponentInParent<PlayerControl>().Enermy;
     }
 
-    private void RainOfFire()
-    {
-        btnRainOfFire.GetComponentInChildren<FillMode>().CoolTime();
-        print("Rain");
-    }
+    //private void RainOfFire()
+    //{
+    //    btnRainOfFire.GetComponentInChildren<FillMode>().CoolTime();
+    //    print("Rain");
+    //}
 
     private void PowerMeteo()
     {
         //여기서부터 파워메테오 UIButton을 찾아서 fillMode스크립트에 연결시켜줘야한다
         //그래야 Cooltime 함수를 SendMessage로 접근할수있는지 없는지 테스트가 가능함
-        btnPowerMeteo.GetComponentInChildren<FillMode>().CoolTime();
-
+        
         GameObject PowerMeteo = Instantiate(goMeteo);
         PowerMeteo.transform.position = new Vector3(FirePos.position.x, FirePos.position.y + 10, FirePos.position.z);
         Vector3 dir = this.GetComponentInParent<PlayerControl>().goIndicator.transform.position - PowerMeteo.transform.position;
-        dir.Normalize();
         PowerMeteo.GetComponent<Fireball>().startDirection = dir;
         PowerMeteo.GetComponent<Fireball>().Destination = this.GetComponentInParent<PlayerControl>().goIndicator.transform.position;
-        PowerMeteo.GetComponent<Fireball>().startMagnitude = 500.0f;
-
-        print("PowerMeteo");
+        
     }
 
     public IEnumerator StartSkill(int value)
@@ -72,7 +69,7 @@ public class PlayerAction : MonoBehaviour
                 Meteo();
                 break;
             case 2:
-                RainOfFire();
+                //RainOfFire();
                 break;
             case 3:
                 PowerMeteo();

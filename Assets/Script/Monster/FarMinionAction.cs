@@ -16,7 +16,7 @@ public class FarMinionAction : MonoBehaviour
             Vector3 dir = this.GetComponentInParent<FarMinionAnim>().Enermy.transform.position - FirePos.position;
             dir.Normalize();
             test.GetComponent<Attack>().startDirection = dir;
-            test.GetComponent<Attack>().startMagnitude = 100.0f;
+            test.GetComponent<Attack>().fSpeed = 5.0f;
             test.GetComponent<Attack>().Enermy = this.GetComponentInParent<FarMinionAnim>().Enermy;
             test.GetComponent<Attack>().ATK = GetComponentInParent<Status>().ATK;
         }
@@ -33,7 +33,7 @@ public class FarMinionAction : MonoBehaviour
             Vector3 dir = this.GetComponentInParent<FarMinionAnim>().Enermy.transform.position - FirePos.position;
             dir.Normalize();
             test.GetComponent<Attack>().startDirection = dir;
-            test.GetComponent<Attack>().startMagnitude = 100.0f;
+            test.GetComponent<Attack>().fSpeed = 5.0f;
             test.GetComponent<Attack>().Enermy = this.GetComponentInParent<FarMinionAnim>().Enermy;
             test.GetComponent<Attack>().ATK = GetComponentInParent<Status>().ATK;
         }

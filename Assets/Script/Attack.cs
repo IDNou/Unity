@@ -6,7 +6,7 @@ public class Attack : MonoBehaviour
 {
     public bool pushOnAwake = true;
     public Vector3 startDirection;
-    public float startMagnitude;
+    public float fSpeed;
     public ForceMode forceMode;
     public GameObject Enermy;
 
@@ -26,7 +26,7 @@ public class Attack : MonoBehaviour
     {
         if (pushOnAwake)
         {
-            Push(startDirection, startMagnitude);
+            Push(startDirection);
         }
     }
 
@@ -36,7 +36,7 @@ public class Attack : MonoBehaviour
         {
             Vector3 dir = Enermy.transform.position - this.transform.position;
             dir.Normalize();
-            Push(dir, startMagnitude);
+            Push(dir);
 
             if (Vector3.Distance(this.transform.position, Enermy.transform.position) < 0.3f)
             {
@@ -65,11 +65,11 @@ public class Attack : MonoBehaviour
         }
     }
 
-    public void Push(Vector3 direction, float magnitude)
+    public void Push(Vector3 direction)
     {
         Vector3 dir = direction.normalized;
         //rgbd.AddForce(dir * magnitude, forceMode);
-        this.transform.Translate(dir * 5.0f * Time.deltaTime);
+        this.transform.Translate(dir * fSpeed * Time.deltaTime);
     }
 
     public void StopParticleSystem(GameObject g)

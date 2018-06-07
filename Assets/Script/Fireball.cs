@@ -7,7 +7,8 @@ public class Fireball : MonoBehaviour
     public bool pushOnAwake = true;
     public Vector3 startDirection;
     public Vector3 Destination;
-    public float startMagnitude;
+    public float fSpeed = 8.0f;
+    public float ATK;
     public ForceMode forceMode;
 
     public GameObject fieryEffect;
@@ -25,20 +26,19 @@ public class Fireball : MonoBehaviour
     {
         if (pushOnAwake)
         {
-            Push(startDirection, startMagnitude);
+            Push(startDirection);
         }
     }
 
     private void Update()
     {
-        Push(startDirection, startMagnitude);
+        Push(startDirection);
     }
 
-    public void Push(Vector3 direction, float magnitude)
+    public void Push(Vector3 direction)
     {
-        //Vector3 dir = direction.normalized;
-        //rgbd.AddForce(dir * magnitude, forceMode);
-        this.transform.Translate(direction * 5.0f * Time.deltaTime);
+        Vector3 dir = direction.normalized;
+        this.transform.Translate(dir * fSpeed * Time.deltaTime);
     }
 
     public void OnCollisionEnter(Collision col)
@@ -54,6 +54,21 @@ public class Fireball : MonoBehaviour
         }
         if (explodeEffect != null)
             explodeEffect.SetActive(true);
+
+        Vector3 vecBomPos = this.transform.position;
+        vecBomPos.y = 0;
+
+        Collider[] colliders;
+        colliders = Physics.OverlapSphere(Destination, this.GetComponent<SphereCollider>().radius);
+        foreach (Collider coll in colliders)
+        {
+            if(coll.tag == "UndeadMinion")
+            {
+                coll.gameObject.GetComponent<Status>().nHP -= ATK;
+            }
+        }
+
+        this.GetComponent<SphereCollider>().enabled = false;
     }
 
     public void StopParticleSystem(GameObject g)
@@ -63,8 +78,9 @@ public class Fireball : MonoBehaviour
         foreach (ParticleSystem p in par)
         {
             p.Stop();
-            //Destroy(this.gameObject);
         }
+
+        Destroy(this.gameObject, explodeEffect.GetComponent<ParticleSystem>().main.duration);
     }
 
     public void OnEnable()
