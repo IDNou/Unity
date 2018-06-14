@@ -30,14 +30,17 @@ public class PlayerAction : MonoBehaviour
 
     private void Meteo()
     {
-        GameObject Meteo = Instantiate(FireBall);
-        Meteo.transform.position = new Vector3(FirePos.position.x, FirePos.position.y + 10, FirePos.position.z);
-        Vector3 dir = this.GetComponentInParent<PlayerControl>().Enermy.transform.position - Meteo.transform.position;
-        dir.Normalize();
-        Meteo.GetComponent<Attack>().startDirection = dir;
-        Meteo.GetComponent<Attack>().fSpeed = 10.0f;
-        Meteo.GetComponent<Attack>().ATK = 100.0f;
-        Meteo.GetComponent<Attack>().Enermy = this.GetComponentInParent<PlayerControl>().Enermy;
+        if (this.GetComponentInParent<PlayerControl>().Enermy)
+        {
+            GameObject Meteo = Instantiate(FireBall);
+            Meteo.transform.position = new Vector3(FirePos.position.x, FirePos.position.y + 10, FirePos.position.z);
+            Vector3 dir = this.GetComponentInParent<PlayerControl>().Enermy.transform.position - Meteo.transform.position;
+            dir.Normalize();
+            Meteo.GetComponent<Attack>().startDirection = dir;
+            Meteo.GetComponent<Attack>().fSpeed = 10.0f;
+            Meteo.GetComponent<Attack>().ATK = 100.0f;
+            Meteo.GetComponent<Attack>().Enermy = this.GetComponentInParent<PlayerControl>().Enermy;
+        }
     }
 
     //private void RainOfFire()

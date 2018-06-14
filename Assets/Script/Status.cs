@@ -42,7 +42,7 @@ public class Status : MonoBehaviour {
     {
         if(HP <= 0.0f)
         {
-           this.gameObject.SetActive(false);
+            this.gameObject.SetActive(false);
             myProgressBar.gameObject.SetActive(false);
         }
     }

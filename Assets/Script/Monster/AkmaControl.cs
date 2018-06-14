@@ -6,22 +6,41 @@ using UnityEngine.AI;
 public class AkmaControl : MonoBehaviour
 {
     private NavMeshAgent navMesh = null;
+    private Animator anim;
+    public GameObject Enermy;
 
+    private float fAttackMotionSpeed = 0.0f;
 
     private bool isMove = false;
     private bool isAttack = false; // 공격중인가?
     private bool isGoAttack = false; // 미니언 있으니 공격해도된다
+    private bool isAttackCharge = true;
 
     private Vector3 Dest;
 
     private void Awake()
     {
         navMesh = this.GetComponent<NavMeshAgent>();
+        anim = this.GetComponentInChildren<Animator>();
     }
 
     private void Update()
     {
-        if(isMove) // 움직이고 있는가?
+        //차징
+        if (!isAttackCharge)
+        {
+            if (fAttackMotionSpeed > 0)
+            {
+                fAttackMotionSpeed -= Time.deltaTime;
+            }
+            else
+            {
+                fAttackMotionSpeed = 3.0f;
+                isAttackCharge = true;
+            }
+        }
+
+        if (isMove) // 움직이고 있는가?
         {
             if(isGoAttack) //미니언하고 같이 움직이는건가?
             {
@@ -45,6 +64,16 @@ public class AkmaControl : MonoBehaviour
                     navMesh.ResetPath();
                 }
             }
+            else
+            {
+                if (SearchForwardMinion("UndeadMinion"))
+                {
+                    isGoAttack = true;
+                    Vector3 towerPos = GameObject.FindGameObjectWithTag("NaelTower").transform.position;
+                    Dest = new Vector3(Random.Range(towerPos.x - 2, towerPos.x), towerPos.y, Random.Range(towerPos.z, towerPos.z - 2));
+                    MoveToDestination(Dest);
+                }
+            }
 
             if (Vector3.Distance(this.transform.position, Dest) < 0.1f) // 목적지에 도착했는가?
             {
@@ -52,17 +81,54 @@ public class AkmaControl : MonoBehaviour
                 isAttack = false;
                 this.transform.position = Dest;
                 navMesh.ResetPath();
+                anim.SetFloat("isMove", 0);
             }
         }
         else
         {
             if(isAttack)
             {
-                if(SearchGameObject("UndeadMinion")) //내주변에 미니언이 있는가?
+                if(SearchForwardMinion("UndeadMinion")) //내주변에 미니언이 있는가?
                 {
                     //스킬있는대로 다퍼붓자
                     //if Enermy가 죽었다면 다시 앞으로 가며 탐색
-                   // if()
+                    // if()
+
+                    float dist = 9999;
+
+                    Collider[] colliders;
+                    colliders = Physics.OverlapSphere(this.transform.position, 3.0f);
+                    foreach (Collider col in colliders)
+                    {
+                        if(col.gameObject.tag == "NaelMinion")
+                        {
+                            if (Vector3.Distance(this.transform.position, col.gameObject.transform.position) < dist)
+                            {
+                                dist = Vector3.Distance(this.transform.position, col.gameObject.transform.position);
+                                Enermy = col.gameObject;
+                            }
+                        }
+                    }
+
+                    print(Enermy);
+                    if(Enermy)
+                    {
+                        anim.SetFloat("isMove", 0);
+                        this.transform.LookAt(Enermy.transform);
+
+                        print(isAttackCharge);
+                        if (isAttackCharge)
+                        {
+                            anim.SetBool("isAttack", true);
+                            isAttackCharge = false;
+                        }
+                        else
+                        {
+                            anim.SetBool("isAttack", false);
+                        }
+                        
+                    }
+
                 }
                 else // 내가 너무 앞에 나와있거나 미니언이없다.
                 {
@@ -138,6 +204,8 @@ public class AkmaControl : MonoBehaviour
     private void MoveToDestination(Vector3 Dest)
     {
         navMesh.SetDestination(Dest);
+        anim.SetBool("isAttack", false);
+        anim.SetFloat("isMove", navMesh.speed);
     }
 
     private void OnDrawGizmos()
