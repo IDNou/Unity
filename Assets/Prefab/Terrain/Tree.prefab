@@ -39,7 +39,7 @@ GameObject:
   - component: {fileID: 114630502441634654}
   m_Layer: 0
   m_Name: Tree
-  m_TagString: Untagged
+  m_TagString: Tree
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295
@@ -74,7 +74,7 @@ GameObject:
   - component: {fileID: 23011620506507974}
   m_Layer: 0
   m_Name: Stump
-  m_TagString: Untagged
+  m_TagString: Tree
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295
@@ -89,7 +89,7 @@ GameObject:
   - component: {fileID: 4521412169725802}
   m_Layer: 0
   m_Name: Colliders
-  m_TagString: Untagged
+  m_TagString: Tree
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295

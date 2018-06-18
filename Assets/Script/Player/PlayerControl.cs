@@ -27,6 +27,19 @@ public class PlayerControl : MonoBehaviour
     private Texture2D mouseCursorTexture;
     private Vector2 hotSpot;
 
+    private int iGold;
+    public int nGold
+    {
+        get
+        {
+            return iGold;
+        }
+        set
+        {
+            iGold = value;
+        }
+    }
+
 
     private bool isAttackCursor = false;
     private bool isAttack = false;

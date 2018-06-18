@@ -109,14 +109,12 @@ public class AkmaControl : MonoBehaviour
                             }
                         }
                     }
-
-                    print(Enermy);
+                    
                     if(Enermy)
                     {
                         anim.SetFloat("isMove", 0);
                         this.transform.LookAt(Enermy.transform);
-
-                        print(isAttackCharge);
+                        
                         if (isAttackCharge)
                         {
                             anim.SetBool("isAttack", true);
@@ -126,7 +124,15 @@ public class AkmaControl : MonoBehaviour
                         {
                             anim.SetBool("isAttack", false);
                         }
-                        
+
+                        if (Enermy.activeSelf == false)
+                        {
+                            Enermy = null;
+                            isAttack = false;
+                            isMove = true;
+                            isGoAttack = true;
+                        }
+
                     }
 
                 }

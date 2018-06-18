@@ -44,6 +44,8 @@ public class Status : MonoBehaviour {
         {
             this.gameObject.SetActive(false);
             myProgressBar.gameObject.SetActive(false);
+            Destroy(this.gameObject, 2);
+            Destroy(myProgressBar.gameObject, 2);
         }
     }
 }

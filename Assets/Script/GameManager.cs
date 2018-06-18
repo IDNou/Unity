@@ -24,4 +24,15 @@ public class GameManager : MonoBehaviour
         //여기다가 시작할때 필요한 매니져를 다올려놓고 시작한다
     }
 
+    private void Update()
+    {
+        //Object[] objs;
+        //objs = GameObject.FindObjectsOfTypeAll(typeof(GameObject));
+
+        //foreach(Object obj in objs)
+        //{
+
+        //}
+    }
+
 }
