@@ -19,6 +19,7 @@ public class FarMinionAction : MonoBehaviour
             test.GetComponent<Attack>().fSpeed = 5.0f;
             test.GetComponent<Attack>().Enermy = this.GetComponentInParent<FarMinionAnim>().Enermy;
             test.GetComponent<Attack>().ATK = GetComponentInParent<Status>().ATK;
+            test.GetComponent<Attack>().Master = this.transform.parent.gameObject;
         }
 
         //GetComponentInParent<FarMinionAnim>().Enermy.GetComponent<Status>().HP -= GetComponentInParent<Status>().ATK;
@@ -36,6 +37,7 @@ public class FarMinionAction : MonoBehaviour
             test.GetComponent<Attack>().fSpeed = 5.0f;
             test.GetComponent<Attack>().Enermy = this.GetComponentInParent<FarMinionAnim>().Enermy;
             test.GetComponent<Attack>().ATK = GetComponentInParent<Status>().ATK;
+            test.GetComponent<Attack>().Master = this.transform.parent.gameObject;
         }
         //GetComponentInParent<FarMinionAnim>().Enermy.GetComponent<Status>().HP -= GetComponentInParent<Status>().ATK;
     }

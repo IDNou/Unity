@@ -25,6 +25,7 @@ public class AkmaAction : MonoBehaviour
             baseAttack.GetComponent<Attack>().fSpeed = 5.0f;
             baseAttack.GetComponent<Attack>().ATK = this.GetComponentInParent<Status>().ATK; // 공격력 표기를 어디다가 해야할지 결정해야할뜻
             baseAttack.GetComponent<Attack>().Enermy = this.GetComponentInParent<AkmaControl>().Enermy;
+            baseAttack.GetComponent<Attack>().Master = this.transform.parent.gameObject;
         }
     }
 

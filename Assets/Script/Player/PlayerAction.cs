@@ -25,6 +25,7 @@ public class PlayerAction : MonoBehaviour
             baseAttack.GetComponent<Attack>().fSpeed = 5.0f;
             baseAttack.GetComponent<Attack>().ATK = this.GetComponentInParent<Status>().ATK; // 공격력 표기를 어디다가 해야할지 결정해야할뜻
             baseAttack.GetComponent<Attack>().Enermy = this.GetComponentInParent<PlayerControl>().Enermy;
+            baseAttack.GetComponent<Attack>().Master = this.transform.parent.gameObject;
         }
     }
 
@@ -40,6 +41,7 @@ public class PlayerAction : MonoBehaviour
             Meteo.GetComponent<Attack>().fSpeed = 10.0f;
             Meteo.GetComponent<Attack>().ATK = 100.0f;
             Meteo.GetComponent<Attack>().Enermy = this.GetComponentInParent<PlayerControl>().Enermy;
+            Meteo.GetComponent<Attack>().Master = this.transform.parent.gameObject;
         }
     }
 
@@ -59,7 +61,8 @@ public class PlayerAction : MonoBehaviour
         Vector3 dir = this.GetComponentInParent<PlayerControl>().goIndicator.transform.position - PowerMeteo.transform.position;
         PowerMeteo.GetComponent<Fireball>().startDirection = dir;
         PowerMeteo.GetComponent<Fireball>().Destination = this.GetComponentInParent<PlayerControl>().goIndicator.transform.position;
-        
+        PowerMeteo.GetComponent<Fireball>().Master = this.transform.parent.gameObject;
+
     }
 
     public IEnumerator StartSkill(int value)

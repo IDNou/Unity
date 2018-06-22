@@ -20,6 +20,7 @@ public class Status : MonoBehaviour {
     }
     public float ATK = 20.0f;
     public float DEF = 10.0f;
+    public GameObject Marker = null;
 
     private UIProgressBar uiProgressBar;
     private UIProgressBar myProgressBar;
@@ -42,6 +43,10 @@ public class Status : MonoBehaviour {
     {
         if(HP <= 0.0f)
         {
+            if(Marker.name == "Prod")
+            {
+                GameObject.Find("_GameManager").GetComponent<GameManager>().nGold += 10;
+            }
             this.gameObject.SetActive(false);
             myProgressBar.gameObject.SetActive(false);
             Destroy(this.gameObject, 2);

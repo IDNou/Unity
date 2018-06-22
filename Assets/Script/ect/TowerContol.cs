@@ -56,6 +56,7 @@ public class TowerContol : MonoBehaviour
                 fireball.GetComponent<Attack>().Enermy = Enermy;
                 fireball.GetComponent<Attack>().ATK = this.GetComponent<Status>().ATK;
                 fireball.GetComponent<Attack>().fSpeed = 5.0f;
+                fireball.GetComponent<Attack>().Master = this.gameObject;
             }
 
             if (!Enermy.activeSelf || Vector3.Distance(Enermy.transform.position, this.transform.position) > this.GetComponent<SphereCollider>().radius)

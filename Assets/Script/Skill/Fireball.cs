@@ -17,6 +17,8 @@ public class Fireball : MonoBehaviour
 
     protected Rigidbody rgbd;
 
+    public GameObject Master;
+
     public void Awake()
     {
         rgbd = GetComponent<Rigidbody>();
@@ -64,6 +66,7 @@ public class Fireball : MonoBehaviour
         {
             if(coll.tag == "UndeadMinion")
             {
+                coll.gameObject.GetComponent<Status>().Marker = Master;
                 coll.gameObject.GetComponent<Status>().nHP -= ATK;
             }
         }

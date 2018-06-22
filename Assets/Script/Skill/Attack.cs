@@ -9,6 +9,7 @@ public class Attack : MonoBehaviour
     public float fSpeed;
     public ForceMode forceMode;
     public GameObject Enermy;
+    public GameObject Master;
 
     public GameObject fieryEffect;
     public GameObject smokeEffect;
@@ -54,6 +55,7 @@ public class Attack : MonoBehaviour
 
                 if (Enermy.GetComponent<Status>())
                 {
+                    Enermy.GetComponent<Status>().Marker = Master;
                     Enermy.GetComponent<Status>().nHP -= ATK;
                 }
                 Destroy(this.gameObject);
