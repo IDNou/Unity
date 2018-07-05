@@ -47,7 +47,6 @@ public class PlayerControl : MonoBehaviour
         goIndicator.SetActive(false);
         attackCursorTexture = Resources.Load<Texture2D>("AttackCursor"); // 아마도 게임매니저로 갈뜻?
         mouseCursorTexture = Resources.Load<Texture2D>("MouseCursor");
-        GameManager.Instance.Print();
     }
 
     private void Update()

@@ -265,8 +265,8 @@ public class UILabel : UIWidget
 			}
 			else if (mText != value)
 			{
-				mText = value;
-				MarkAsChanged();
+                mText = value;
+                MarkAsChanged();
 				ProcessAndRequest();
 			}
 

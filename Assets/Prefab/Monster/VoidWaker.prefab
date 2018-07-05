@@ -429,6 +429,7 @@ MonoBehaviour:
   MaxHP: 120
   ATK: 30
   DEF: 10
+  Marker: {fileID: 0}
 --- !u!114 &114950672198420666
 MonoBehaviour:
   m_ObjectHideFlags: 1

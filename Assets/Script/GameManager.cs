@@ -19,6 +19,8 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    private ItemDatabase dbInstance;
+
     private GameObject pStorePanel;
     private GameObject pGoldPanel;
     private int iGold;
@@ -34,6 +36,18 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    private List<ItemInfo> invenItem;
+    public List<ItemInfo> ninvenItem
+    {
+        get
+        {
+            return invenItem;
+        }
+        set
+        {
+            invenItem = value;
+        }
+    }
 
     private void Awake()
     {
@@ -41,11 +55,16 @@ public class GameManager : MonoBehaviour
         if (sInstance == null)
             sInstance = this;
 
+        //아이템 데이터베이스
+        dbInstance = ItemDatabase.Instance;
+
         pStorePanel = GameObject.Find("StorePanel");
         pGoldPanel = GameObject.Find("GoldPanel");
 
         pStorePanel.SetActive(false);
         pGoldPanel.GetComponentInChildren<UILabel>().text = "0";
+
+        invenItem = new List<ItemInfo>();
     }
 
     private void Update()
@@ -62,12 +81,16 @@ public class GameManager : MonoBehaviour
             }
         }
 
+        if(Input.GetKeyDown(KeyCode.A))
+        {
+            iGold += 500;
+        }
+
+        if(Input.GetKeyDown(KeyCode.C))
+        {
+
+        }
+
         pGoldPanel.GetComponentInChildren<UILabel>().text = iGold.ToString();
     }
-
-    public void Print()
-    {
-        print("dd");
-    }
-
 }
