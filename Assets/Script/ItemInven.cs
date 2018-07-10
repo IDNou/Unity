@@ -17,12 +17,23 @@ public class ItemInven : MonoBehaviour
         }
     }
 
+    private Status sPlayerInfo;
+
+    private void Start()
+    {
+        ItemBox = new ItemInfo();
+        sPlayerInfo = GameObject.Find("Prod").GetComponent<Status>();
+    }
+
     public void OnClick()
     { 
-        //널 처리 여기서부터
         if(ItemBox.kind == itemkind.CONSUM)
         {
-            emptyItemBox();
+            //회복템 효과를 게임매니저로 넘겨줘야한다.
+            if (sPlayerInfo.HP < sPlayerInfo.MAXHP)
+            {
+                emptyItemBox();
+            }
         }
     }
 

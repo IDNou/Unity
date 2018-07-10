@@ -60,6 +60,7 @@ public class PlayerAction : MonoBehaviour
         PowerMeteo.transform.position = new Vector3(FirePos.position.x, FirePos.position.y + 10, FirePos.position.z);
         Vector3 dir = this.GetComponentInParent<PlayerControl>().goIndicator.transform.position - PowerMeteo.transform.position;
         PowerMeteo.GetComponent<Fireball>().startDirection = dir;
+        PowerMeteo.GetComponent<Fireball>().ATK = 300.0f;
         PowerMeteo.GetComponent<Fireball>().Destination = this.GetComponentInParent<PlayerControl>().goIndicator.transform.position;
         PowerMeteo.GetComponent<Fireball>().Master = this.transform.parent.gameObject;
 

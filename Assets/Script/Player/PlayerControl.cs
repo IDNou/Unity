@@ -46,7 +46,7 @@ public class PlayerControl : MonoBehaviour
         anim = this.GetComponentInChildren<Animation>();
         goIndicator.SetActive(false);
         attackCursorTexture = Resources.Load<Texture2D>("AttackCursor"); // 아마도 게임매니저로 갈뜻?
-        mouseCursorTexture = Resources.Load<Texture2D>("MouseCursor");
+        mouseCursorTexture = Resources.Load<Texture2D>("MouseCursor"); // 이것도 게임매니저로 갈뜻
     }
 
     private void Update()
@@ -243,7 +243,28 @@ public class PlayerControl : MonoBehaviour
                 {
                     isCharge = false;
                     animDelay = ATTACK.length * 2.0f;
-                    anim.CrossFade(ATTACK.name); // 발사
+                    if (Vector3.Distance(this.transform.position, Enermy.transform.position) < 3.0f)
+                    {
+                        this.transform.LookAt(Enermy.transform);
+                        anim.CrossFade(ATTACK.name); // 발사
+                    }
+                    else
+                    {
+                        isMove = true;
+                        isBaseAttack = true;
+                        Dest = Enermy.transform.position;
+                        MoveOrder(Dest);
+                        anim.CrossFade(MOVE.name);
+                    }
+                }
+                else
+                {
+                    this.transform.LookAt(Enermy.transform);
+                    //요기는 쪼꼼나중에 해보자!
+                    //if (Vector3.Distance(this.transform.position, Enermy.transform.position) < 3.0f)
+                    //{
+                    //    anim.CrossFade(IDLE.name);
+                    //}
                 }
             }
 
@@ -329,7 +350,7 @@ public class PlayerControl : MonoBehaviour
             {
                 Enermy = hit.collider.gameObject;
 
-                if (Enermy.GetComponent<Status>() && Enermy.GetComponent<Status>().nHP < 0)
+                if (Enermy.GetComponent<Status>() && Enermy.GetComponent<Status>().HP < 0)
                     Enermy = null;
 
                 if (Enermy)

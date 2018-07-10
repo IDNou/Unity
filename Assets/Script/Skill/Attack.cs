@@ -56,7 +56,7 @@ public class Attack : MonoBehaviour
                 if (Enermy.GetComponent<Status>())
                 {
                     Enermy.GetComponent<Status>().Marker = Master;
-                    Enermy.GetComponent<Status>().nHP -= ATK;
+                    Enermy.GetComponent<Status>().HP -= ATK;
                 }
                 Destroy(this.gameObject);
             }
@@ -70,7 +70,6 @@ public class Attack : MonoBehaviour
     public void Push(Vector3 direction)
     {
         Vector3 dir = direction.normalized;
-        //rgbd.AddForce(dir * magnitude, forceMode);
         this.transform.Translate(dir * fSpeed * Time.deltaTime);
     }
 

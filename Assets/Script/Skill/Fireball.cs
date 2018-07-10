@@ -67,7 +67,7 @@ public class Fireball : MonoBehaviour
             if(coll.tag == "UndeadMinion")
             {
                 coll.gameObject.GetComponent<Status>().Marker = Master;
-                coll.gameObject.GetComponent<Status>().nHP -= ATK;
+                coll.gameObject.GetComponent<Status>().HP -= ATK;
             }
         }
 
