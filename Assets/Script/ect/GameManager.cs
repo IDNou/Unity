@@ -36,6 +36,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    // 아이템 정보들 적용시키기?
     private List<ItemInfo> invenItem;
     public List<ItemInfo> ninvenItem
     {
@@ -48,6 +49,8 @@ public class GameManager : MonoBehaviour
             invenItem = value;
         }
     }
+
+    private Status PlayerStatus;
 
     private void Awake()
     {
@@ -65,6 +68,8 @@ public class GameManager : MonoBehaviour
         pGoldPanel.GetComponentInChildren<UILabel>().text = "0";
 
         invenItem = new List<ItemInfo>();
+
+        PlayerStatus = GameObject.Find("Prod").GetComponent<Status>();
     }
 
     private void Update()
@@ -81,14 +86,27 @@ public class GameManager : MonoBehaviour
             }
         }
 
-        if(Input.GetKeyDown(KeyCode.K))
+        if(Input.GetKeyDown(KeyCode.Alpha3))
         {
             iGold += 500;
         }
 
         if(Input.GetKeyDown(KeyCode.C))
         {
+            //foreach(ItemInfo item in invenItem)
+            //{
+            //    print(item.name);
+            //}
 
+            GameObject Label = new GameObject();
+            //Label.AddComponent<UILabel>();
+
+            Instantiate(Label);
+        }
+
+        if(Input.GetKeyDown(KeyCode.X))
+        {
+            PlayerStatus.HP -= 10.0f;
         }
 
         pGoldPanel.GetComponentInChildren<UILabel>().text = iGold.ToString();

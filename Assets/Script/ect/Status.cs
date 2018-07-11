@@ -17,14 +17,25 @@ public class Status : MonoBehaviour {
     public float MAXEXP;
     public GameObject Marker = null;
 
+    public bool isHealing;
+    public float RecoveryMount;
+
     private UIProgressBar uiProgressBar;
     private UIProgressBar myProgressBar;
+    private UILabel uiGoldText;
+    private UILabel myGoldText;
 
     private void Start()
     {
+        //여기서 몬스터 및 캐릭터의 데이터베이스를 읽어와서 세팅해준다.
+
+        isHealing = false;
+        RecoveryMount = 0;
+
         uiProgressBar = Resources.Load<UIProgressBar>("Progress Bar");
+        uiGoldText = Resources.Load<UILabel>("GoldText");
         myProgressBar = Instantiate(uiProgressBar, GameObject.Find("ProgressPanel").transform);
-        myProgressBar.GetComponent<FollowProgressBar>().target = this.gameObject.GetComponentInChildren<Transform>().Find("ProgressBarPos").gameObject;
+        myProgressBar.GetComponent<FollowProgressBar>().target = this.transform.Find("ProgressBarPos").gameObject;
         myProgressBar.GetComponent<FollowProgressBar>().FillHP();
     }
 
@@ -35,6 +46,10 @@ public class Status : MonoBehaviour {
             if(Marker && Marker.name == "Prod")
             {
                 GameObject.Find("_GameManager").GetComponent<GameManager>().nGold += 10;
+
+                myGoldText = Instantiate(uiGoldText, GameObject.Find("HUDGoldPanel").transform);
+                myGoldText.GetComponent<GoldText>().target = this.gameObject;
+                myGoldText.text = "+10Gold"; 
             }
 
             if(this.tag=="NaelMinion")
@@ -56,6 +71,8 @@ public class Status : MonoBehaviour {
         {
             LevelUP();
         }
+
+        if (isHealing) SlowHeal();
     }
 
     private void LevelUP()
@@ -66,20 +83,24 @@ public class Status : MonoBehaviour {
         //레벨업 이펙트
     }
 
-    private void SlowHeal(float RecoveryMount)
+    private void SlowHeal()
     {
 
-        float healHp = Time.deltaTime * 10.0f; // 한 프레임 당 회복량 (초당 10회복)
+        float healHp = Time.deltaTime * 5.0f; // 한 프레임 당 회복량 (초당 10회복)
 
         // 현재 남은 회복량이 한프레임 회복량 보다 작은 경우
-        if (RecoveryMount < healHp)
+        if(HP >= MAXHP || HP <= 0)
         {
-            HP += healAmount;   // 남은 회복량 만큼만 회복
+            isHealing = false;
+        }
+
+        if (RecoveryMount <= healHp)
+        {
+            HP += RecoveryMount;   // 남은 회복량 만큼만 회복
             isHealing = false;
         }
         else
-            currHp += healHp;       // 한프레임 당 회복량 만큼 회복
-
+            HP += healHp;       // 한프레임 당 회복량 만큼 회복
 
         RecoveryMount -= healHp;
     }

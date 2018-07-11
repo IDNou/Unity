@@ -20,24 +20,27 @@ public class Impail : MonoBehaviour
     {
         fTime += Time.deltaTime;
 
-        if(fTime > deadTime)
+        if (fTime > deadTime)
         {
-            foreach(GameObject go in test)
-            {
-                if(go.GetComponent<Status>())
-                {
-                    print(go.name);
-                }
-            }
+            //foreach (GameObject go in test)
+            //{
+            //    if (go.GetComponent<Status>())
+            //    {
+            //        print(go.name);
+            //    }
+            //}
             fTime = 0;
-            this.transform.root.gameObject.SetActive(false);
+            test.Clear();
+            //this.transform.root.gameobject.setactive(false);
         }
+
     }
 
     private void OnParticleCollision(GameObject other)
     {
         if (!test.Contains(other))
         {
+            print(other.name);
             test.Add(other);
         }
     }

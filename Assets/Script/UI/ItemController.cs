@@ -25,6 +25,10 @@ public class ItemController : MonoBehaviour
         }
     }
 
+    private bool isClick;
+    private float ClickWaitTime = 0.0f;    
+    public float dblClickSpeed = 0.5f;	
+
     protected void Awake()
     {
         slotImage = this.GetComponent<Image>();
@@ -32,9 +36,22 @@ public class ItemController : MonoBehaviour
         itemButton = this.GetComponent<UIButton>();
         itemInfoDiscrip = GameObject.Find("ItemInfo").GetComponentInChildren<UILabel>();
         itemBuyButton = GameObject.Find("BuyButton").GetComponent<ItemBuy>();
+
+        isClick = false;
     }
 
-    public void OnClick()
+    public void Update()
+    {
+        if (isClick)
+        {
+            if (Time.time > ClickWaitTime + dblClickSpeed)
+            {
+                isClick = false;
+            }
+        }
+    }
+
+    private void OnClick()
     {
         string distription = "이름: " + itemInfo.name + "\n"
             + "가격: " + itemInfo.price.ToString() + "\n";
@@ -58,5 +75,17 @@ public class ItemController : MonoBehaviour
 
         itemInfoDiscrip.text = distription;
         itemBuyButton.sItemInfo = itemInfo;
+
+        if (isClick)
+        {
+            itemBuyButton.SendMessage("OnClick");
+            isClick = false;
+        }
+        else
+        {
+            ClickWaitTime = Time.time;  //클릭 했을때의 시간 저장 
+            isClick = true;
+        }
     }
+
 }

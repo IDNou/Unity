@@ -133,6 +133,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a574cbb76a1070543b35ee49f9f0bc5a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  dblClickSpeed: 0.5
 --- !u!114 &114952938114771860
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -157,8 +158,4 @@ MonoBehaviour:
   pressedSprite2D: {fileID: 0}
   disabledSprite2D: {fileID: 0}
   pixelSnap: 0
-  onClick:
-  - mTarget: {fileID: 114620419094918030}
-    mMethodName: OnClick
-    mParameters: []
-    oneShot: 0
+  onClick: []

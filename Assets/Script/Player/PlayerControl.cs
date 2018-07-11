@@ -53,9 +53,28 @@ public class PlayerControl : MonoBehaviour
     {
         //RayCastingEnermy(); 좀더 손좀봐야할뜻
 
+        if(Input.GetKeyDown(KeyCode.G))
+        {
+            Ray ray = GameObject.Find("UI Root").GetComponentInChildren<Camera>().ScreenPointToRay(Input.mousePosition);
+
+            RaycastHit hit;
+
+            if(Physics.Raycast(ray,out hit))
+            {
+                print(hit.collider.name);
+            }
+        }
+
         if (Input.GetKeyDown(KeyCode.Mouse1))
         {
-            RayCastingToDiscriminate();
+            Ray ray = GameObject.Find("UI Root").GetComponentInChildren<Camera>().ScreenPointToRay(Input.mousePosition);
+
+            RaycastHit hit;
+
+            if (!Physics.Raycast(ray, out hit))
+            {
+                RayCastingToDiscriminate();
+            }
         }
         else if(Input.GetKeyDown(KeyCode.Mouse0))
         {

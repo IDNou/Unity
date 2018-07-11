@@ -39,9 +39,9 @@ public class PlayerProgressBar : MonoBehaviour
             currMP = target.GetComponentInParent<Status>().MP;
             currEXP = target.GetComponentInParent<Status>().CUREXP;
 
-            HPUIBar.GetComponentInChildren<UILabel>().text = currHP + "/" + maxHP;
-            MPUIBar.GetComponentInChildren<UILabel>().text = currMP + "/" + maxMP;
-            EXPUIBar.GetComponentInChildren<UILabel>().text = currEXP + "/" + maxEXP;
+            HPUIBar.GetComponentInChildren<UILabel>().text = (int)currHP + "/" + maxHP;
+            MPUIBar.GetComponentInChildren<UILabel>().text = (int)currMP + "/" + maxMP;
+            EXPUIBar.GetComponentInChildren<UILabel>().text = (int)currEXP + "/" + maxEXP;
 
             HPUIBar.value = currHP / maxHP;
             MPUIBar.value = currMP / maxMP;
