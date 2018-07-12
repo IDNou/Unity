@@ -45,8 +45,8 @@ public class PlayerControl : MonoBehaviour
         navMesh = this.GetComponent<NavMeshAgent>();
         anim = this.GetComponentInChildren<Animation>();
         goIndicator.SetActive(false);
-        attackCursorTexture = Resources.Load<Texture2D>("AttackCursor"); // 아마도 게임매니저로 갈뜻?
-        mouseCursorTexture = Resources.Load<Texture2D>("MouseCursor"); // 이것도 게임매니저로 갈뜻
+        attackCursorTexture = Resources.Load<Texture2D>("Textures/AttackCursor"); // 아마도 게임매니저로 갈뜻?
+        mouseCursorTexture = Resources.Load<Texture2D>("Textures/MouseCursor"); // 이것도 게임매니저로 갈뜻
     }
 
     private void Update()

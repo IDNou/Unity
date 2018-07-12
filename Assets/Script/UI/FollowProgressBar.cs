@@ -39,6 +39,7 @@ public class FollowProgressBar : MonoBehaviour
         }
 
         currHP = target.GetComponentInParent<Status>().HP;
+        maxHP = target.GetComponentInParent<Status>().MAXHP;
 
         uiBar.value = currHP / maxHP;
     }

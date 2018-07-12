@@ -9,13 +9,13 @@ public class ItemInfo
     public itemkind kind;
     public string name;
     public int Count;
-    public int ATK;
-    public int DEF;
-    public int SPD;
-    public int RecoveryHP;
-    public int HP;
-    public int RecoveryMP;
-    public int MP;
+    public float ATK;
+    public float DEF;
+    public float SPD;
+    public float RecoveryHP;
+    public float HP;
+    public float RecoveryMP;
+    public float MP;
     public string comment;
     public int price;
     public Sprite icon;
@@ -37,7 +37,7 @@ public class ItemInfo
         price = _item.price;
         icon = _item.icon;
     }
-    public ItemInfo(itemkind _kind , string _name,int _Count, int _ATK, int _DEF, int _SPD,int _RecoveryHP,int _HP,int _RecoveryMP,int _MP, string _comment,int _price, Sprite _icon)
+    public ItemInfo(itemkind _kind , string _name,int _Count, float _ATK, float _DEF, float _SPD, float _RecoveryHP, float _HP, float _RecoveryMP, float _MP, string _comment,int _price, Sprite _icon)
     {
         kind = _kind;
         name = _name;
@@ -73,6 +73,7 @@ public class ItemDatabase : MonoBehaviour
     }
 
     private Sprite[] itemIcons;
+    private Dictionary<string,Sprite> dicItemIcons;
     private List<ItemInfo> lstItemInfo;
 
     private void Awake()
@@ -82,25 +83,30 @@ public class ItemDatabase : MonoBehaviour
 
         //나중에 json 쓸때는 한번에 읽어오는게 아니라 각각 읽어와서 써야한다. 그래야지 올바른 아이콘에 들어감
         itemIcons = Resources.LoadAll<Sprite>("Textures/Items");
+        dicItemIcons = new Dictionary<string, Sprite>();
+        for (int i=0; i<itemIcons.Length; i++)
+        {
+            dicItemIcons.Add(itemIcons[i].name, itemIcons[i]);
+        }
 
         // json 으로 읽어와서 포문으로 16개 돌린다
         lstItemInfo = new List<ItemInfo>();
-        lstItemInfo.Add(new ItemInfo(itemkind.CONSUM, this.itemIcons[0].name, 1, 0, 0, 0, 100, 0, 0, 0, "1", 10, this.itemIcons[0]));
-        lstItemInfo.Add(new ItemInfo(itemkind.EQUIP, this.itemIcons[1].name, 1, 0, 0, 0, 0, 0, 0, 0, "1", 10, this.itemIcons[1]));
-        lstItemInfo.Add(new ItemInfo(itemkind.EQUIP, this.itemIcons[2].name, 1, 0, 0, 0, 0, 0, 0, 0, "1", 10, this.itemIcons[2]));
-        lstItemInfo.Add(new ItemInfo(itemkind.EQUIP, this.itemIcons[3].name, 1, 0, 0, 0, 0, 0, 0, 0, "1", 10, this.itemIcons[3]));
-        lstItemInfo.Add(new ItemInfo(itemkind.EQUIP, this.itemIcons[4].name, 1, 0, 0, 0, 0, 0, 0, 0, "1", 10, this.itemIcons[4]));
-        lstItemInfo.Add(new ItemInfo(itemkind.EQUIP, this.itemIcons[5].name, 1, 0, 0, 0, 0, 0, 0, 0, "1", 10, this.itemIcons[5]));
-        lstItemInfo.Add(new ItemInfo(itemkind.EQUIP, this.itemIcons[6].name, 1, 0, 0, 0, 0, 0, 0, 0, "1", 10, this.itemIcons[6]));
-        lstItemInfo.Add(new ItemInfo(itemkind.EQUIP, this.itemIcons[7].name, 1, 0, 0, 0, 0, 0, 0, 0, "1", 10, this.itemIcons[7]));
-        lstItemInfo.Add(new ItemInfo(itemkind.EQUIP, this.itemIcons[8].name, 1, 0, 0, 0, 0, 0, 0, 0, "1", 10, this.itemIcons[8]));
-        lstItemInfo.Add(new ItemInfo(itemkind.EQUIP, this.itemIcons[9].name, 1, 0, 0, 0, 0, 0, 0, 0, "1", 10, this.itemIcons[9]));
-        lstItemInfo.Add(new ItemInfo(itemkind.EQUIP, this.itemIcons[10].name, 1, 0, 0, 0, 0, 0, 0, 0, "1", 10, this.itemIcons[10]));
-        lstItemInfo.Add(new ItemInfo(itemkind.EQUIP, this.itemIcons[11].name, 1, 0, 0, 0, 0, 0, 0, 0, "1", 10, this.itemIcons[11]));
-        lstItemInfo.Add(new ItemInfo(itemkind.EQUIP, this.itemIcons[12].name, 1, 0, 0, 0, 0, 0, 0, 0, "1", 10, this.itemIcons[12]));
-        lstItemInfo.Add(new ItemInfo(itemkind.EQUIP, this.itemIcons[13].name, 1, 0, 0, 0, 0, 0, 0, 0, "1", 10, this.itemIcons[13]));
-        lstItemInfo.Add(new ItemInfo(itemkind.EQUIP, this.itemIcons[14].name, 1, 0, 0, 0, 0, 0, 0, 0, "1", 10, this.itemIcons[14]));
-        lstItemInfo.Add(new ItemInfo(itemkind.EQUIP, this.itemIcons[15].name, 1, 0, 0, 0, 0, 0, 0, 0, "1", 10, this.itemIcons[15]));
+        for (int i=0; i<itemIcons.Length; i++)
+        {
+            lstItemInfo.Add(new ItemInfo((itemkind)((int)LoadManager.Instance.ItemJson["Item"][i]["kind"]),
+                (string)LoadManager.Instance.ItemJson["Item"][i]["name"],
+                (int)LoadManager.Instance.ItemJson["Item"][i]["count"],
+                (float)LoadManager.Instance.ItemJson["Item"][i]["ATK"],
+                (float)LoadManager.Instance.ItemJson["Item"][i]["DEF"],
+                (float)LoadManager.Instance.ItemJson["Item"][i]["SPD"],
+                (float)LoadManager.Instance.ItemJson["Item"][i]["RecoveryHP"],
+                (float)LoadManager.Instance.ItemJson["Item"][i]["HP"],
+                (float)LoadManager.Instance.ItemJson["Item"][i]["RecoveryMP"],
+                (float)LoadManager.Instance.ItemJson["Item"][i]["MP"],
+                (string)LoadManager.Instance.ItemJson["Item"][i]["comment"],
+                (int)LoadManager.Instance.ItemJson["Item"][i]["price"],
+                dicItemIcons[(string)LoadManager.Instance.ItemJson["Item"][i]["name"]]));
+        }
 
         GameObject itemGrid = GameObject.Find("StorePanel").GetComponentInChildren<UIGrid>().gameObject;
 

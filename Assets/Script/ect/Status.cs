@@ -27,7 +27,44 @@ public class Status : MonoBehaviour {
 
     private void Start()
     {
+        string name = null;
         //여기서 몬스터 및 캐릭터의 데이터베이스를 읽어와서 세팅해준다.
+        if (this.GetComponent<PlayerControl>())
+        {
+            name = "prod";
+        }
+        else if(this.GetComponent<AkmaControl>())
+        {
+            name = "akma";
+           
+        }
+        else if(this.GetComponent<MinionContol>())
+        {
+            name = "gun";
+          
+        }
+        else if(this.GetComponent<FarMinionAnim>())
+        {
+            name = "one";
+           
+        }
+        else if(this.GetComponent<TowerContol>())
+        {
+            name = "tower";
+        }
+        //else if(나무)
+
+        Level = (float)LoadManager.Instance.StatusJson[name]["level"];
+        HP = (float)LoadManager.Instance.StatusJson[name]["HP"];
+        MAXHP = (float)LoadManager.Instance.StatusJson[name]["MAXHP"];
+        MP = (float)LoadManager.Instance.StatusJson[name]["MP"];
+        MAXMP = (float)LoadManager.Instance.StatusJson[name]["MAXMP"];
+        ATK = (float)LoadManager.Instance.StatusJson[name]["ATK"];
+        DEF = (float)LoadManager.Instance.StatusJson[name]["DEF"];
+        SPD = (float)LoadManager.Instance.StatusJson[name]["SPD"];
+        EXP = (float)LoadManager.Instance.StatusJson[name]["EXP"];
+        CUREXP = (float)LoadManager.Instance.StatusJson[name]["CUREXP"];
+        MAXEXP = (float)LoadManager.Instance.StatusJson[name]["MAXEXP"];
 
         isHealing = false;
         RecoveryMount = 0;
@@ -78,7 +115,7 @@ public class Status : MonoBehaviour {
     private void LevelUP()
     {
         Level++;
-        CUREXP -= MAXEXP ;
+        CUREXP -= MAXEXP;
         MAXEXP *= 1.7f;
         //레벨업 이펙트
     }

@@ -78,9 +78,12 @@ public class ItemInven : MonoBehaviour
                         emptyItemBox();
                     }
                 }
+                //장비 일때
                 else
                 {
+                    GameManager.Instance.MinusItemStat(ItemBox);
                     emptyItemBox();
+
                 }
             }
         }

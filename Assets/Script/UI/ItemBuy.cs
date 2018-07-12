@@ -86,6 +86,7 @@ public class ItemBuy : MonoBehaviour
                                 inven.GetComponent<UIButton>().normalSprite = lItem.name;
                                 inven.GetComponent<ItemInven>().sItemBox = lItem;
                                 GameManager.Instance.ninvenItem.Add(lItem);
+                                GameManager.Instance.PlusItemStat(lItem);
                                 break;
                             }
                         }
@@ -94,7 +95,4 @@ public class ItemBuy : MonoBehaviour
             }
         }
     }
-
-
-
 }

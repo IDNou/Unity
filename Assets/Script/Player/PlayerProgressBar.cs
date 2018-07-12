@@ -23,9 +23,6 @@ public class PlayerProgressBar : MonoBehaviour
         HPUIBar = this.transform.Find("HPBar").GetComponent<UIProgressBar>();
         MPUIBar = this.transform.Find("MPBar").GetComponent<UIProgressBar>();
         EXPUIBar = this.transform.Find("ExpBar").GetComponent<UIProgressBar>();
-        maxHP = target.GetComponentInParent<Status>().MAXHP;
-        maxMP = target.GetComponentInParent<Status>().MAXMP;
-        maxEXP = target.GetComponentInParent<Status>().MAXEXP;
         HPUIBar.GetComponentInChildren<UILabel>().text = maxHP + "/" + maxHP;
         MPUIBar.GetComponentInChildren<UILabel>().text = maxMP + "/" + maxMP;
         EXPUIBar.GetComponentInChildren<UILabel>().text = "0/" + maxEXP;
@@ -38,14 +35,22 @@ public class PlayerProgressBar : MonoBehaviour
             currHP = target.GetComponentInParent<Status>().HP;
             currMP = target.GetComponentInParent<Status>().MP;
             currEXP = target.GetComponentInParent<Status>().CUREXP;
+            CheckMaxStatus();
 
-            HPUIBar.GetComponentInChildren<UILabel>().text = (int)currHP + "/" + maxHP;
-            MPUIBar.GetComponentInChildren<UILabel>().text = (int)currMP + "/" + maxMP;
-            EXPUIBar.GetComponentInChildren<UILabel>().text = (int)currEXP + "/" + maxEXP;
+            HPUIBar.GetComponentInChildren<UILabel>().text = (int)currHP + "/" + (int)maxHP;
+            MPUIBar.GetComponentInChildren<UILabel>().text = (int)currMP + "/" + (int)maxMP;
+            EXPUIBar.GetComponentInChildren<UILabel>().text = (int)currEXP + "/" + (int)maxEXP;
 
             HPUIBar.value = currHP / maxHP;
             MPUIBar.value = currMP / maxMP;
             EXPUIBar.value = currEXP / maxEXP;
         }
+    }
+
+    public void CheckMaxStatus()
+    {
+        maxHP = target.GetComponentInParent<Status>().MAXHP;
+        maxMP = target.GetComponentInParent<Status>().MAXMP;
+        maxEXP = target.GetComponentInParent<Status>().MAXEXP;
     }
 }
