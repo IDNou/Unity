@@ -52,7 +52,10 @@ public class Status : MonoBehaviour {
         {
             name = "tower";
         }
-        //else if(나무)
+        else if(this.tag == "Tree")
+        {
+            name = "tree";
+        }
 
         Level = (float)LoadManager.Instance.StatusJson[name]["level"];
         HP = (float)LoadManager.Instance.StatusJson[name]["HP"];
@@ -69,20 +72,23 @@ public class Status : MonoBehaviour {
         isHealing = false;
         RecoveryMount = 0;
 
-        uiProgressBar = Resources.Load<UIProgressBar>("Progress Bar");
-        uiGoldText = Resources.Load<UILabel>("GoldText");
-        myProgressBar = Instantiate(uiProgressBar, GameObject.Find("ProgressPanel").transform);
-        myProgressBar.GetComponent<FollowProgressBar>().target = this.transform.Find("ProgressBarPos").gameObject;
-        myProgressBar.GetComponent<FollowProgressBar>().FillHP();
+        if (this.tag != "Tree") // 수정중
+        {
+            uiProgressBar = Resources.Load<UIProgressBar>("Progress Bar");
+            uiGoldText = Resources.Load<UILabel>("GoldText");
+            myProgressBar = Instantiate(uiProgressBar, GameObject.Find("ProgressPanel").transform);
+            myProgressBar.GetComponent<FollowProgressBar>().target = this.transform.Find("ProgressBarPos").gameObject;
+            myProgressBar.GetComponent<FollowProgressBar>().FillHP();
+        }
     }
 
     private void Update()
     {
         if(HP <= 0.0f)
         {
-            if(Marker && Marker.name == "Prod")
+            if(Marker && Marker.name == "Prod" && this.tag != "Tree")
             {
-                GameObject.Find("_GameManager").GetComponent<GameManager>().nGold += 10;
+                GameObject.Find("_GameManager").GetComponent<GameManager>().nGold += 10; // 떨어지는돈 제어해야함
 
                 myGoldText = Instantiate(uiGoldText, GameObject.Find("HUDGoldPanel").transform);
                 myGoldText.GetComponent<GoldText>().target = this.gameObject;
@@ -97,11 +103,22 @@ public class Status : MonoBehaviour {
             {
                 GameObject.Find("Prod").GetComponent<Status>().CUREXP += EXP;
             }
+            else if(this.tag == "Player")
+            {
 
-            this.gameObject.SetActive(false);
-            myProgressBar.gameObject.SetActive(false);
-            Destroy(this.gameObject, 2);
-            Destroy(myProgressBar.gameObject, 2);
+            }
+            else if(this.tag == "Akma")
+            {
+
+            }
+
+            if (this.tag != "Tree") // 수정중
+            {
+                this.gameObject.SetActive(false);
+                myProgressBar.gameObject.SetActive(false);
+                Destroy(this.gameObject, 2);
+                Destroy(myProgressBar.gameObject, 2);
+            }
         }
 
         if(CUREXP >= MAXEXP)
@@ -140,5 +157,13 @@ public class Status : MonoBehaviour {
             HP += healHp;       // 한프레임 당 회복량 만큼 회복
 
         RecoveryMount -= healHp;
+    }
+
+    private void FastHeal(float HealMount)
+    {
+        if (HP + HealMount <= MAXHP)
+            HP += HealMount;
+        else
+            HP = MAXHP;
     }
 }

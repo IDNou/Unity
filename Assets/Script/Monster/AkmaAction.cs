@@ -17,13 +17,15 @@ public class AkmaAction : MonoBehaviour
     {
         if (this.GetComponentInParent<AkmaControl>().Enermy)
         {
+            Status myStatus = GetComponentInParent<Status>();
+            Status enermyStatus = this.GetComponentInParent<AkmaControl>().Enermy.GetComponent<Status>();
             GameObject baseAttack = Instantiate(FireBall);
             baseAttack.transform.position = FirePos.position;
             Vector3 dir = this.GetComponentInParent<AkmaControl>().Enermy.transform.position - FirePos.position;
             dir.Normalize();
             baseAttack.GetComponent<Attack>().startDirection = dir;
             baseAttack.GetComponent<Attack>().fSpeed = 5.0f;
-            baseAttack.GetComponent<Attack>().ATK = this.GetComponentInParent<Status>().ATK; // 공격력 표기를 어디다가 해야할지 결정해야할뜻
+            baseAttack.GetComponent<Attack>().ATK = (int)(myStatus.ATK - (myStatus.ATK * enermyStatus.DEF / (enermyStatus.DEF + 100)));
             baseAttack.GetComponent<Attack>().Enermy = this.GetComponentInParent<AkmaControl>().Enermy;
             baseAttack.GetComponent<Attack>().Master = this.transform.parent.gameObject;
         }

@@ -11,8 +11,10 @@ public class MinionAction : MonoBehaviour
 
         if (Enermy)
         {
-            Enermy.GetComponent<Status>().Marker = this.gameObject;
-            Enermy.GetComponent<Status>().HP -= this.GetComponentInParent<Status>().ATK;
+            Status enermyStatus = Enermy.GetComponent<Status>();
+            Status myStatus = this.GetComponentInParent<Status>();
+            enermyStatus.Marker = this.gameObject;
+            enermyStatus.HP -= (int)(myStatus.ATK - (myStatus.ATK * enermyStatus.DEF / (enermyStatus.DEF + 100)));
         }
     }
 }

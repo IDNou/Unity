@@ -216,6 +216,12 @@ public class PlayerControl : MonoBehaviour
             //    MoveOrder(Dest);
             //    anim.CrossFade(MOVE.name);
             //}
+            if (Enermy.GetComponent<Status>() && Enermy.GetComponent<Status>().HP < 0)
+            {
+                Enermy = null;
+                isMove = false;
+                isAttack = false;
+            }
 
             if (isMove)
             {
@@ -287,7 +293,7 @@ public class PlayerControl : MonoBehaviour
                 }
             }
 
-            if (!Enermy.activeSelf)
+            if (Enermy && !Enermy.activeSelf)
             {
                 anim.CrossFade(IDLE.name);
                 Enermy = null;
@@ -346,7 +352,7 @@ public class PlayerControl : MonoBehaviour
 
         if (Physics.Raycast(ray, out hit))
         {
-            if (hit.collider.gameObject.tag == "UndeadMinion")//|| hit.collider.gameObject.tag == "Tree")
+            if (hit.collider.gameObject.tag == "UndeadMinion" || hit.collider.gameObject.tag == "Tree")
             {
                 ChaingeCursor(true);
             }
@@ -365,7 +371,7 @@ public class PlayerControl : MonoBehaviour
 
         if (Physics.Raycast(ray, out hit))
         {
-            if (hit.collider.gameObject.tag == "UndeadMinion" || hit.collider.gameObject.tag == "UndeadTower")//|| hit.collider.gameObject.tag == "Tree")
+            if (hit.collider.gameObject.tag == "UndeadMinion" || hit.collider.gameObject.tag == "UndeadTower"|| hit.collider.gameObject.tag == "Tree")
             {
                 Enermy = hit.collider.gameObject;
 

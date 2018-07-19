@@ -41,57 +41,56 @@ public class ItemBuy : MonoBehaviour
                     //소비아이템일 경우
                     if (Item.kind == itemkind.CONSUM)
                     {
-                        bool isSame = false;
-                        foreach (UISprite inven in invenItemSprite)
+                        if (Item.name == "치즈" || Item.name == "범위 체력 문서")
                         {
-                            //아이템 이름이 같은게 있는가?
-                            if (inven.spriteName == Item.icon.name && inven.GetComponent<ItemInven>().sItemBox.Count < 3)
-                            {
-                                isSame = true;
-                                GameManager.Instance.nGold -= Item.price;
-                                inven.GetComponent<ItemInven>().sItemBox.Count++;
-                                break;
-                            }
+                            AddItemToInven();
                         }
-
-                        if (!isSame)
+                        else
                         {
+                            bool isSame = false;
                             foreach (UISprite inven in invenItemSprite)
                             {
-                                if (inven.spriteName == "Dark")
+                                //아이템 이름이 같은게 있는가?
+                                if (inven.spriteName == Item.icon.name && inven.GetComponent<ItemInven>().sItemBox.Count < 3)
                                 {
+                                    isSame = true;
                                     GameManager.Instance.nGold -= Item.price;
-                                    inven.atlas = Resources.Load<UIAtlas>("Textures/StoreAtlas");
-                                    ItemInfo lItem = new ItemInfo(Item);
-                                    inven.spriteName = lItem.name;
-                                    inven.GetComponent<UIButton>().normalSprite = lItem.name;
-                                    inven.GetComponent<ItemInven>().sItemBox = lItem;
-                                    GameManager.Instance.ninvenItem.Add(lItem); //굳이 소비아이템 전송시킬필요가없다.
+                                    inven.GetComponent<ItemInven>().sItemBox.Count++;
                                     break;
                                 }
+                            }
+
+                            if (!isSame)
+                            {
+                                AddItemToInven();
                             }
                         }
                     }
                     //소비 아이템이 아닐경우
                     else
                     {
-                        foreach (UISprite inven in invenItemSprite)
-                        {
-                            if (inven.spriteName == "Dark")
-                            {
-                                GameManager.Instance.nGold -= Item.price;
-                                inven.atlas = Resources.Load<UIAtlas>("Textures/StoreAtlas");
-                                ItemInfo lItem = new ItemInfo(Item);
-                                inven.spriteName = lItem.name;
-                                inven.GetComponent<UIButton>().normalSprite = lItem.name;
-                                inven.GetComponent<ItemInven>().sItemBox = lItem;
-                                GameManager.Instance.ninvenItem.Add(lItem);
-                                GameManager.Instance.PlusItemStat(lItem);
-                                break;
-                            }
-                        }
+                        AddItemToInven();
                     }
                 }
+            }
+        }
+    }
+
+    private void AddItemToInven()
+    {
+        foreach (UISprite inven in invenItemSprite)
+        {
+            if (inven.spriteName == "Dark")
+            {
+                GameManager.Instance.nGold -= Item.price;
+                inven.atlas = Resources.Load<UIAtlas>("Textures/StoreAtlas");
+                ItemInfo lItem = new ItemInfo(Item);
+                inven.spriteName = lItem.name;
+                inven.GetComponent<UIButton>().normalSprite = lItem.name;
+                inven.GetComponent<ItemInven>().sItemBox = lItem;
+                GameManager.Instance.ninvenItem.Add(lItem);
+                GameManager.Instance.PlusItemStat(lItem);
+                break;
             }
         }
     }

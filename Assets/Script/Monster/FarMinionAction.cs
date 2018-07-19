@@ -11,15 +11,17 @@ public class FarMinionAction : MonoBehaviour
     {
         if (this.GetComponentInParent<FarMinionAnim>().Enermy)
         {
-            GameObject test = Instantiate(AttackParticle);
-            test.transform.position = FirePos.position;
+            Status myStatus = GetComponentInParent<Status>();
+            Status enermyStatus = this.GetComponentInParent<FarMinionAnim>().Enermy.GetComponent<Status>();
+            GameObject Attack = Instantiate(AttackParticle);
+            Attack.transform.position = FirePos.position;
             Vector3 dir = this.GetComponentInParent<FarMinionAnim>().Enermy.transform.position - FirePos.position;
             dir.Normalize();
-            test.GetComponent<Attack>().startDirection = dir;
-            test.GetComponent<Attack>().fSpeed = 5.0f;
-            test.GetComponent<Attack>().Enermy = this.GetComponentInParent<FarMinionAnim>().Enermy;
-            test.GetComponent<Attack>().ATK = GetComponentInParent<Status>().ATK;
-            test.GetComponent<Attack>().Master = this.transform.parent.gameObject;
+            Attack.GetComponent<Attack>().startDirection = dir;
+            Attack.GetComponent<Attack>().fSpeed = 5.0f;
+            Attack.GetComponent<Attack>().Enermy = this.GetComponentInParent<FarMinionAnim>().Enermy;
+            Attack.GetComponent<Attack>().ATK = (int)(myStatus.ATK - (myStatus.ATK * enermyStatus.DEF / (enermyStatus.DEF + 100)));
+            Attack.GetComponent<Attack>().Master = this.transform.parent.gameObject;
         }
 
         //GetComponentInParent<FarMinionAnim>().Enermy.GetComponent<Status>().HP -= GetComponentInParent<Status>().ATK;
@@ -29,15 +31,17 @@ public class FarMinionAction : MonoBehaviour
     {
         if (this.GetComponentInParent<FarMinionAnim>().Enermy)
         {
-            GameObject test = Instantiate(AttackParticle);
-            test.transform.position = FirePos.position;
+            Status myStatus = GetComponentInParent<Status>();
+            Status enermyStatus = this.GetComponentInParent<FarMinionAnim>().Enermy.GetComponent<Status>();
+            GameObject Attack = Instantiate(AttackParticle);
+            Attack.transform.position = FirePos.position;
             Vector3 dir = this.GetComponentInParent<FarMinionAnim>().Enermy.transform.position - FirePos.position;
             dir.Normalize();
-            test.GetComponent<Attack>().startDirection = dir;
-            test.GetComponent<Attack>().fSpeed = 5.0f;
-            test.GetComponent<Attack>().Enermy = this.GetComponentInParent<FarMinionAnim>().Enermy;
-            test.GetComponent<Attack>().ATK = GetComponentInParent<Status>().ATK;
-            test.GetComponent<Attack>().Master = this.transform.parent.gameObject;
+            Attack.GetComponent<Attack>().startDirection = dir;
+            Attack.GetComponent<Attack>().fSpeed = 5.0f;
+            Attack.GetComponent<Attack>().Enermy = this.GetComponentInParent<FarMinionAnim>().Enermy;
+            Attack.GetComponent<Attack>().ATK = (int)(myStatus.ATK - (myStatus.ATK * enermyStatus.DEF / (enermyStatus.DEF + 100)));
+            Attack.GetComponent<Attack>().Master = this.transform.parent.gameObject;
         }
         //GetComponentInParent<FarMinionAnim>().Enermy.GetComponent<Status>().HP -= GetComponentInParent<Status>().ATK;
     }

@@ -36,7 +36,6 @@ GameObject:
   - component: {fileID: 4711647221158552}
   - component: {fileID: 33342492290202336}
   - component: {fileID: 23024597428091776}
-  - component: {fileID: 114630502441634654}
   m_Layer: 0
   m_Name: Tree
   m_TagString: Tree
@@ -203,7 +202,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1492770417125518}
   m_LocalRotation: {x: -6.609759e-12, y: -1, z: 0.0000018099951, w: 0.0000036517765}
-  m_LocalPosition: {x: 0, y: 0.5999957, z: -1.1970022}
+  m_LocalPosition: {x: 1.610617, y: -0.00000047683716, z: -0.6149766}
   m_LocalScale: {x: 2, y: 2, z: 2}
   m_Children:
   - {fileID: 4521412169725802}
@@ -416,19 +415,6 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.3, y: 0.7, z: 0.3}
   m_Center: {x: 0, y: 0.1, z: 0}
---- !u!114 &114630502441634654
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1451436423385648}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ffcc9ae320628e34ca29a5d7ef850caa, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  fallSpeed: 150
-  RecoveryTime: 10
 --- !u!208 &208764989288105988
 NavMeshObstacle:
   m_ObjectHideFlags: 1

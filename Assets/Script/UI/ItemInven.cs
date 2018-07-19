@@ -53,12 +53,20 @@ public class ItemInven : MonoBehaviour
                     //회복템 효과를 게임매니저로 넘겨줘야한다.
                     if (sPlayerInfo.HP < sPlayerInfo.MAXHP)
                     {
-                        sPlayerInfo.isHealing = true;
-                        sPlayerInfo.RecoveryMount = ItemBox.RecoveryHP;
-                        if (--ItemBox.Count <= 0)
+                        if (ItemBox.name == "치즈" || ItemBox.name == "범위 체력 문서")
                         {
-                            ItemBox.Count = 1;
+                            sPlayerInfo.SendMessage("FastHeal", ItemBox.RecoveryHP);
                             emptyItemBox();
+                        }
+                        else
+                        {
+                            sPlayerInfo.isHealing = true;
+                            sPlayerInfo.RecoveryMount = ItemBox.RecoveryHP;
+                            if (--ItemBox.Count <= 0)
+                            {
+                                ItemBox.Count = 1;
+                                emptyItemBox();
+                            }
                         }
                     }
                 }

@@ -55,8 +55,9 @@ public class Attack : MonoBehaviour
 
                 if (Enermy.GetComponent<Status>())
                 {
-                    Enermy.GetComponent<Status>().Marker = Master;
-                    Enermy.GetComponent<Status>().HP -= ATK;
+                    Status enermyStatus = Enermy.GetComponent<Status>();
+                    enermyStatus.Marker = Master;
+                    enermyStatus.HP -= ATK; //방어력/(방어력+100)
                 }
                 Destroy(this.gameObject);
             }
