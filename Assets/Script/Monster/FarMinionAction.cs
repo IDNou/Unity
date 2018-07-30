@@ -11,6 +11,7 @@ public class FarMinionAction : MonoBehaviour
     {
         if (this.GetComponentInParent<FarMinionAnim>().Enermy)
         {
+            SoundManager.Instance.EFXPlaySound("EtherealMediumHit" + Random.Range(1,4));
             Status myStatus = GetComponentInParent<Status>();
             Status enermyStatus = this.GetComponentInParent<FarMinionAnim>().Enermy.GetComponent<Status>();
             GameObject Attack = Instantiate(AttackParticle);
@@ -31,6 +32,7 @@ public class FarMinionAction : MonoBehaviour
     {
         if (this.GetComponentInParent<FarMinionAnim>().Enermy)
         {
+            SoundManager.Instance.EFXPlaySound("EtherealHeavyHit" + Random.Range(1, 4));
             Status myStatus = GetComponentInParent<Status>();
             Status enermyStatus = this.GetComponentInParent<FarMinionAnim>().Enermy.GetComponent<Status>();
             GameObject Attack = Instantiate(AttackParticle);

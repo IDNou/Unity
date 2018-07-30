@@ -53,18 +53,6 @@ public class PlayerControl : MonoBehaviour
     {
         //RayCastingEnermy(); 좀더 손좀봐야할뜻
 
-        if(Input.GetKeyDown(KeyCode.G))
-        {
-            Ray ray = GameObject.Find("UI Root").GetComponentInChildren<Camera>().ScreenPointToRay(Input.mousePosition);
-
-            RaycastHit hit;
-
-            if(Physics.Raycast(ray,out hit))
-            {
-                print(hit.collider.name);
-            }
-        }
-
         if (Input.GetKeyDown(KeyCode.Mouse1))
         {
             Ray ray = GameObject.Find("UI Root").GetComponentInChildren<Camera>().ScreenPointToRay(Input.mousePosition);
@@ -93,7 +81,7 @@ public class PlayerControl : MonoBehaviour
 
                 if (Physics.Raycast(ray, out hit))
                 {
-                    if(hit.collider.gameObject.tag == "UndeadMinion")
+                    if(hit.collider.gameObject.tag == "UndeadMinion" || hit.collider.gameObject.tag == "Enermy")
                     {
                         Enermy = hit.collider.gameObject;
 
@@ -352,7 +340,8 @@ public class PlayerControl : MonoBehaviour
 
         if (Physics.Raycast(ray, out hit))
         {
-            if (hit.collider.gameObject.tag == "UndeadMinion" || hit.collider.gameObject.tag == "Tree")
+            print(hit.collider.gameObject.tag);
+            if (hit.collider.gameObject.tag == "UndeadMinion" || hit.collider.gameObject.tag == "Tree" || hit.collider.gameObject.tag == "Enermy")
             {
                 ChaingeCursor(true);
             }
@@ -371,7 +360,7 @@ public class PlayerControl : MonoBehaviour
 
         if (Physics.Raycast(ray, out hit))
         {
-            if (hit.collider.gameObject.tag == "UndeadMinion" || hit.collider.gameObject.tag == "UndeadTower"|| hit.collider.gameObject.tag == "Tree")
+            if (hit.collider.gameObject.tag == "UndeadMinion" || hit.collider.gameObject.tag == "UndeadTower"|| hit.collider.gameObject.tag == "Tree" || hit.collider.gameObject.tag == "Enermy")
             {
                 Enermy = hit.collider.gameObject;
 

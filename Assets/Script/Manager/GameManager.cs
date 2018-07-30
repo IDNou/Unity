@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class DummyInfo
 {
@@ -63,6 +64,7 @@ public class GameManager : MonoBehaviour
 
     private ItemDatabase dbInstance;
     private LoadManager loadInstance;
+    private SoundManager SoundInstance;
 
     private GameObject pStorePanel;
     private GameObject pGoldPanel;
@@ -95,19 +97,27 @@ public class GameManager : MonoBehaviour
     }
 
     private Status PlayerStatus;
+    private Status EnermyStatus;
     public DummyInfo curStatus;
     public DummyInfo ItemStatus;
+
+    public bool isPlayerDie = false;
+    public bool isEnermyDie = false;
+    private float myRegenTime = 0;
+    private float enermyRegenTime = 0;
 
     private void Awake()
     {
         //여기다가 시작할때 필요한 매니져를 다올려놓고 시작한다
-        if (sInstance == null)
-            sInstance = this;
+        //if (sInstance == null)
+        //    sInstance = this;
 
         //아이템 데이터베이스
         loadInstance = LoadManager.Instance;
         loadInstance.FileLoad();
         dbInstance = ItemDatabase.Instance;
+        SoundInstance = SoundManager.Instance;
+        SoundInstance.BGMPlay("BackGround");
 
         pStorePanel = GameObject.Find("StorePanel");
         pGoldPanel = GameObject.Find("GoldPanel");
@@ -119,12 +129,72 @@ public class GameManager : MonoBehaviour
         invenItem = new List<ItemInfo>();
 
         PlayerStatus = GameObject.Find("Prod").GetComponent<Status>();
+        EnermyStatus = GameObject.Find("Akma").GetComponent<Status>();
         curStatus = new DummyInfo();
         ItemStatus = new DummyInfo();
     }
 
     private void Update()
     {
+        if(isPlayerDie)
+        {
+            myRegenTime += Time.deltaTime;
+
+            if(myRegenTime > PlayerStatus.Level + 5)
+            {
+                PlayerStatus.gameObject.SetActive(true);
+                PlayerStatus.SendMessage("SetActiveMyProgressBar");
+                EnermyStatus.GetComponent<PlayerControl>().enabled = false;
+                EnermyStatus.GetComponent<NavMeshAgent>().enabled = false;
+                PlayerStatus.transform.position = new Vector3(45, 0, -1);
+                //Camera.main.transform.position = new Vector3(45, 5, -4);
+                EnermyStatus.GetComponent<PlayerControl>().enabled = true;
+                EnermyStatus.GetComponent<NavMeshAgent>().enabled = true;
+                Camera.main.gameObject.GetComponent<CameraContol>().isControlStop = true;
+                PlayerStatus.SendMessage("FullStatus");
+                isPlayerDie = false;
+                myRegenTime = 0;
+            }
+        }
+
+        if(isEnermyDie)
+        {
+            enermyRegenTime += Time.deltaTime;
+
+            if (enermyRegenTime > 5)
+            {
+                EnermyStatus.gameObject.SetActive(true);
+                EnermyStatus.GetComponent<AkmaControl>().SendMessage("ResetBool");
+                EnermyStatus.SendMessage("SetActiveMyProgressBar");
+                EnermyStatus.GetComponent<AkmaControl>().enabled = false;
+                EnermyStatus.GetComponent<NavMeshAgent>().enabled = false;
+                EnermyStatus.transform.root.localPosition = new Vector3(-5.0f, 0, 28.0f);
+                //Camera.main.transform.position = new Vector3(-5, 5, 27);
+                EnermyStatus.GetComponent<AkmaControl>().enabled = true;
+                EnermyStatus.GetComponent<NavMeshAgent>().enabled = true;
+                EnermyStatus.SendMessage("FullStatus");
+                isEnermyDie = false;
+                enermyRegenTime = 0;
+            }
+        }
+
+        if(GameObject.FindGameObjectsWithTag("NaelTower").Length <= 0)
+        {
+            //Time.timeScale = 0.0f;
+            //패배
+            GameObject FadePanel = GameObject.Find("UI Root/Camera/FadeOutPanel");
+            FadePanel.GetComponentInChildren<UILabel>().text = "You Lose";
+            FadePanel.GetComponent<FadeOut>().isResultDone = true;
+        }
+        else if(GameObject.FindGameObjectsWithTag("UndeadTower").Length <= 0)
+        {
+            //Time.timeScale = 0.0f;
+            //승리
+            GameObject FadePanel = GameObject.Find("UI Root/Camera/FadeOutPanel");
+            FadePanel.GetComponentInChildren<UILabel>().text = "Victory!";
+            FadePanel.GetComponent<FadeOut>().isResultDone = true;
+        }
+
         if (Input.GetKeyDown(KeyCode.I))
         {
             if(pStorePanel.activeSelf)
@@ -133,18 +203,26 @@ public class GameManager : MonoBehaviour
             }
             else
             {
+                SoundInstance.EFXPlaySound("Store"+Random.Range(1,4));
                 pStorePanel.SetActive(true);
             }
         }
 
         if(Input.GetKeyDown(KeyCode.Alpha3))
         {
+            SoundInstance.EFXPlaySound("ReceiveGold");
             iGold += 500;
         }
 
         if(Input.GetKeyDown(KeyCode.X))
         {
-            PlayerStatus.HP -= 10.0f;
+            PlayerStatus.HP -= 100.0f;
+            PlayerStatus.MP -= 100.0f;
+        }
+
+        if (Input.GetKeyDown(KeyCode.L))
+        {
+            PlayerStatus.CUREXP = PlayerStatus.MAXEXP;
         }
 
         curStatus.ATK = (float)LoadManager.Instance.StatusJson["prod"]["ATK"] + (PlayerStatus.Level - 1) * 5;

@@ -55,13 +55,23 @@ public class ItemInven : MonoBehaviour
                     {
                         if (ItemBox.name == "치즈" || ItemBox.name == "범위 체력 문서")
                         {
+                            SoundManager.Instance.EFXPlaySound("치즈");
                             sPlayerInfo.SendMessage("FastHeal", ItemBox.RecoveryHP);
                             emptyItemBox();
                         }
                         else
                         {
-                            sPlayerInfo.isHealing = true;
-                            sPlayerInfo.RecoveryMount = ItemBox.RecoveryHP;
+                            SoundManager.Instance.EFXPlaySound("HealTarget");
+                            if (ItemBox.name == "체력")
+                            {
+                                sPlayerInfo.isHPHealing = true;
+                                sPlayerInfo.HPRecoveryMount = ItemBox.RecoveryHP;
+                            }
+                            else if (ItemBox.name == "마력")
+                            {
+                                sPlayerInfo.isMPHealing = true;
+                                sPlayerInfo.MPRecoveryMount = ItemBox.RecoveryMP;
+                            }
                             if (--ItemBox.Count <= 0)
                             {
                                 ItemBox.Count = 1;
@@ -75,6 +85,7 @@ public class ItemInven : MonoBehaviour
             {
                 //아이템 팔기
                 GameManager.Instance.nGold += (int)((float)ItemBox.price * 0.71f);
+                SoundManager.Instance.EFXPlaySound("ReceiveGold");
                 if (ItemBox.kind == itemkind.CONSUM)
                 {
                     if(ItemBox.Count >1)

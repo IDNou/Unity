@@ -4,4 +4,13 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes: []
+  m_Scenes:
+  - enabled: 1
+    path: Assets/_Scene/Chaos_Main.unity
+    guid: 0a4538c811a8ba4499e7341a1dbb3ed9
+  - enabled: 1
+    path: Assets/_Scene/Chaos.unity
+    guid: 2d31c81d99cd83942b94fa6e0765f43c
+  - enabled: 1
+    path: Assets/_Scene/Chaos_Loading.unity
+    guid: c2aa4a97435839c4bb2c5e1e0b8f4620

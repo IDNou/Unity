@@ -30,7 +30,7 @@ public class PlayerProgressBar : MonoBehaviour
 
     private void Update()
     {
-        if (target)
+        if (target.activeSelf)
         {
             currHP = target.GetComponentInParent<Status>().HP;
             currMP = target.GetComponentInParent<Status>().MP;

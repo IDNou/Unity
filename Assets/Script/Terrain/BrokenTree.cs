@@ -32,7 +32,6 @@ public class BrokenTree : MonoBehaviour
             {
                 if (this.gameObject.isStatic)
                 {
-                    print(this.gameObject.isStatic);
                     this.gameObject.isStatic = false;
                     for (int i = 0; i < this.transform.childCount; i++)
                         this.transform.GetChild(i).gameObject.isStatic = false;

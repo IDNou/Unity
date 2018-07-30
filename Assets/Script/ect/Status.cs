@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class Status : MonoBehaviour {
 
@@ -17,13 +18,17 @@ public class Status : MonoBehaviour {
     public float MAXEXP;
     public GameObject Marker = null;
 
-    public bool isHealing;
-    public float RecoveryMount;
+    public bool isHPHealing;
+    public bool isMPHealing;
+    public float HPRecoveryMount;
+    public float MPRecoveryMount;
 
     private UIProgressBar uiProgressBar;
     private UIProgressBar myProgressBar;
     private UILabel uiGoldText;
     private UILabel myGoldText;
+
+    private bool isPlaying = true;
 
     private void Start()
     {
@@ -69,8 +74,10 @@ public class Status : MonoBehaviour {
         CUREXP = (float)LoadManager.Instance.StatusJson[name]["CUREXP"];
         MAXEXP = (float)LoadManager.Instance.StatusJson[name]["MAXEXP"];
 
-        isHealing = false;
-        RecoveryMount = 0;
+        isHPHealing = false;
+        isMPHealing = false;
+        HPRecoveryMount = 0;
+        MPRecoveryMount = 0;
 
         if (this.tag != "Tree") // 수정중
         {
@@ -84,57 +91,104 @@ public class Status : MonoBehaviour {
 
     private void Update()
     {
-        if(HP <= 0.0f)
+        if (GameObject.FindGameObjectsWithTag("NaelTower").Length <= 0 || GameObject.FindGameObjectsWithTag("UndeadTower").Length <= 0)
         {
-            if(Marker && Marker.name == "Prod" && this.tag != "Tree")
-            {
-                GameObject.Find("_GameManager").GetComponent<GameManager>().nGold += 10; // 떨어지는돈 제어해야함
-
-                myGoldText = Instantiate(uiGoldText, GameObject.Find("HUDGoldPanel").transform);
-                myGoldText.GetComponent<GoldText>().target = this.gameObject;
-                myGoldText.text = "+10Gold"; 
-            }
-
-            if(this.tag=="NaelMinion")
-            {
-                GameObject.Find("Akma").GetComponent<Status>().CUREXP += EXP;
-            }
-            else if(this.tag == "UndeadMinion")
-            {
-                GameObject.Find("Prod").GetComponent<Status>().CUREXP += EXP;
-            }
-            else if(this.tag == "Player")
-            {
-
-            }
-            else if(this.tag == "Akma")
-            {
-
-            }
-
-            if (this.tag != "Tree") // 수정중
-            {
-                this.gameObject.SetActive(false);
-                myProgressBar.gameObject.SetActive(false);
-                Destroy(this.gameObject, 2);
-                Destroy(myProgressBar.gameObject, 2);
-            }
+            isPlaying = false;
+            if(this.GetComponent<NavMeshAgent>())
+                this.GetComponent<NavMeshAgent>().speed = 0;
+            if (this.GetComponentInChildren<Animation>())
+                this.GetComponentInChildren<Animation>().enabled = false;
+            if (this.GetComponentInChildren<Animator>())
+                this.GetComponentInChildren<Animator>().enabled = false;
         }
 
-        if(CUREXP >= MAXEXP)
+        if (isPlaying)
         {
-            LevelUP();
-        }
+            if (HP <= 0.0f)
+            {
+                if (Marker && Marker.name == "Prod" && this.tag != "Tree")
+                {
+                    GameObject.Find("_GameManager").GetComponent<GameManager>().nGold += 10; // 떨어지는돈 제어해야함
 
-        if (isHealing) SlowHeal();
+                    myGoldText = Instantiate(uiGoldText, GameObject.Find("HUDGoldPanel").transform);
+                    myGoldText.GetComponent<GoldText>().target = this.gameObject;
+                    myGoldText.text = "+10Gold";
+                }
+
+                if (this.tag == "NaelMinion")
+                {
+                    if (GameObject.Find("Akma"))
+                        GameObject.Find("Akma").GetComponent<Status>().CUREXP += EXP;
+                }
+                else if (this.tag == "UndeadMinion")
+                {
+                    if (GameObject.Find("Prod"))
+                        GameObject.Find("Prod").GetComponent<Status>().CUREXP += EXP;
+                }
+                else if (this.tag == "Player")
+                {
+                    GameObject.Find("Akma").GetComponent<Status>().CUREXP += GameObject.Find("Prod").GetComponent<Status>().Level * 50;
+                }
+                else if (this.tag == "Akma")
+                {
+                    GameObject.Find("Prod").GetComponent<Status>().CUREXP += GameObject.Find("Akma").GetComponent<Status>().Level * 50;
+                }
+
+                if (this.tag == "NaelMinion" || this.tag == "UndeadMinion" || this.tag == "NaelTower" || this.tag == "UndeadTower") // 수정중
+                {
+                    this.gameObject.SetActive(false);
+                    myProgressBar.gameObject.SetActive(false);
+                    Destroy(this.gameObject, 2);
+                    Destroy(myProgressBar.gameObject, 2);
+                }
+                else
+                {
+                    this.gameObject.SetActive(false);
+                    myProgressBar.gameObject.SetActive(false);
+
+                    if (this.tag == "Player")
+                    {
+                        GameManager.Instance.isPlayerDie = true;
+                        //프로그래스바 설정해줘야한다
+                    }
+                    else if (this.tag == "Enermy")
+                    {
+                        GameManager.Instance.isEnermyDie = true;
+                    }
+                }
+            }
+
+            if (CUREXP >= MAXEXP && Level <= 18)
+            {
+                LevelUP();
+            }
+
+            if (isHPHealing) SlowHeal();
+            if (isMPHealing) SlowMana();
+        }
     }
 
     private void LevelUP()
     {
+        SoundManager.Instance.EFXPlaySound("Levelup");
         Level++;
-        CUREXP -= MAXEXP;
-        MAXEXP *= 1.7f;
-        //레벨업 이펙트
+        if (Level <= 18)
+        {
+            CUREXP -= MAXEXP;
+            MAXEXP *= 1.7f;
+            MAXHP += 50;
+            MAXMP += 50;
+            HP += 50;
+            MP += 50;
+            ATK += 5;
+        }
+        if (!this.transform.Find("LevelupEffect"))
+        {
+            GameObject LevelupEffect = (GameObject)Instantiate(Resources.Load<GameObject>("Particle/Levelup"), this.transform);
+            LevelupEffect.name = "LevelupEffect";
+        }
+        else
+            this.transform.Find("LevelupEffect").GetComponent<ParticleSystem>().Play();
     }
 
     private void SlowHeal()
@@ -145,18 +199,39 @@ public class Status : MonoBehaviour {
         // 현재 남은 회복량이 한프레임 회복량 보다 작은 경우
         if(HP >= MAXHP || HP <= 0)
         {
-            isHealing = false;
+            isHPHealing = false;
         }
 
-        if (RecoveryMount <= healHp)
+        if (HPRecoveryMount <= healHp)
         {
-            HP += RecoveryMount;   // 남은 회복량 만큼만 회복
-            isHealing = false;
+            HP += HPRecoveryMount;   // 남은 회복량 만큼만 회복
+            isHPHealing = false;
         }
         else
             HP += healHp;       // 한프레임 당 회복량 만큼 회복
 
-        RecoveryMount -= healHp;
+        HPRecoveryMount -= healHp;
+    }
+
+    private void SlowMana()
+    {
+        float healMp = Time.deltaTime * 5.0f; // 한 프레임 당 회복량 (초당 10회복)
+
+        // 현재 남은 회복량이 한프레임 회복량 보다 작은 경우
+        if (MP >= MAXMP || MP <= 0)
+        {
+            isMPHealing = false;
+        }
+
+        if (MPRecoveryMount <= healMp)
+        {
+            MP += MPRecoveryMount;   // 남은 회복량 만큼만 회복
+            isMPHealing = false;
+        }
+        else
+            MP += healMp;       // 한프레임 당 회복량 만큼 회복
+
+        MPRecoveryMount -= healMp;
     }
 
     private void FastHeal(float HealMount)
@@ -165,5 +240,21 @@ public class Status : MonoBehaviour {
             HP += HealMount;
         else
             HP = MAXHP;
+
+        if (MP + HealMount <= MAXMP)
+            MP += HealMount;
+        else
+            MP = MAXMP;
+    }
+
+    private void FullStatus()
+    {
+        HP = MAXHP;
+        MP = MAXMP;
+    }
+
+    private void SetActiveMyProgressBar()
+    {
+        myProgressBar.gameObject.SetActive(true);
     }
 }

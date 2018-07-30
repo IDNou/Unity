@@ -110,7 +110,6 @@ public class ItemDatabase : MonoBehaviour
 
         GameObject itemGrid = GameObject.Find("StorePanel").GetComponentInChildren<UIGrid>().gameObject;
 
-
         foreach (ItemInfo mlist in lstItemInfo)
         {
             GameObject itemSlot = Instantiate(Resources.Load<GameObject>("ItemSlot"));

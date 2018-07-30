@@ -64,7 +64,7 @@ public class Fireball : MonoBehaviour
         colliders = Physics.OverlapSphere(Destination, this.GetComponent<SphereCollider>().radius);
         foreach (Collider coll in colliders)
         {
-            if(coll.tag == "UndeadMinion")
+            if(coll.tag == "UndeadMinion" || coll.tag == "UndeadTower" || coll.tag == "Enermy")
             {
                 coll.gameObject.GetComponent<Status>().Marker = Master;
                 coll.gameObject.GetComponent<Status>().HP -= ATK;

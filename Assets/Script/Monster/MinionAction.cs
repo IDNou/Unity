@@ -11,6 +11,7 @@ public class MinionAction : MonoBehaviour
 
         if (Enermy)
         {
+            SoundManager.Instance.EFXPlaySound("MetalHeavyBashFlesh" + Random.Range(1,4));
             Status enermyStatus = Enermy.GetComponent<Status>();
             Status myStatus = this.GetComponentInParent<Status>();
             enermyStatus.Marker = this.gameObject;
