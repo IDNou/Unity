@@ -38,7 +38,7 @@ public class SoundManager : MonoBehaviour
 
         bgmSource = this.gameObject.AddComponent<AudioSource>();
         bgmSource.loop = true;
-        BGMVolume(0.1f);
+        SetBGMVolume(0.1f);
 
         efxSource = new AudioSource[7];
         for (int i=0; i<7; i++)
@@ -61,7 +61,6 @@ public class SoundManager : MonoBehaviour
         {
             if(!efxSource[i].isPlaying)
             {
-                //print(i);
                 efxSource[i].clip = bgmClips[efxName];
                 efxSource[i].Play();
                 break;
@@ -83,9 +82,28 @@ public class SoundManager : MonoBehaviour
         bgmSource.Stop();
     }
 
-    public void BGMVolume(float volume)
+    public void SetBGMVolume(float volume)
     {
         bgmSource.volume = volume;
         //efxSource.volume = volume;
     }
+
+    public void SetEFXVolume(float volume)
+    {
+        for (int i = 0; i < 7; i++)
+        {
+            efxSource[i].volume = volume;
+        }
+    }
+
+    public float GetBGMVolume()
+    {
+        return bgmSource.volume;
+    }
+
+    public float GetEFXVolume()
+    {
+        return efxSource[0].volume;
+    }
+    
 }

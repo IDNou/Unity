@@ -56,6 +56,7 @@ public class GameManager : MonoBehaviour
             {
                 GameObject gObject = new GameObject("_GameManager");
                 sInstance = gObject.AddComponent<GameManager>();
+                DontDestroyOnLoad(gObject);
             }
 
             return sInstance;
@@ -69,6 +70,7 @@ public class GameManager : MonoBehaviour
     private GameObject pStorePanel;
     private GameObject pGoldPanel;
     private GameObject pStatusPanel;
+    private GameObject pEscPanel;
     private int iGold;
     public int nGold
     {
@@ -109,8 +111,8 @@ public class GameManager : MonoBehaviour
     private void Awake()
     {
         //여기다가 시작할때 필요한 매니져를 다올려놓고 시작한다
-        //if (sInstance == null)
-        //    sInstance = this;
+        if (sInstance == null)
+            sInstance = this;
 
         //아이템 데이터베이스
         loadInstance = LoadManager.Instance;
@@ -118,12 +120,17 @@ public class GameManager : MonoBehaviour
         dbInstance = ItemDatabase.Instance;
         SoundInstance = SoundManager.Instance;
         SoundInstance.BGMPlay("BackGround");
+        DontDestroyOnLoad(loadInstance);
+        DontDestroyOnLoad(dbInstance);
+
 
         pStorePanel = GameObject.Find("StorePanel");
         pGoldPanel = GameObject.Find("GoldPanel");
         pStatusPanel = GameObject.Find("StatusInfo");
+        pEscPanel = GameObject.Find("EscPanel");
 
         pStorePanel.SetActive(false);
+        pEscPanel.SetActive(false);
         pGoldPanel.GetComponentInChildren<UILabel>().text = "0";
 
         invenItem = new List<ItemInfo>();
@@ -223,6 +230,14 @@ public class GameManager : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.L))
         {
             PlayerStatus.CUREXP = PlayerStatus.MAXEXP;
+        }
+
+        if(Input.GetKeyDown(KeyCode.Escape))
+        {
+            if (pEscPanel.activeSelf)
+                pEscPanel.SetActive(false);
+            else
+                pEscPanel.SetActive(true);
         }
 
         curStatus.ATK = (float)LoadManager.Instance.StatusJson["prod"]["ATK"] + (PlayerStatus.Level - 1) * 5;

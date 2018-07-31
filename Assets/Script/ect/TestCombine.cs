@@ -6,13 +6,13 @@ public class TestCombine : MonoBehaviour
 {
     private void Awake()
     {
-        for (int i = 0; i < this.transform.childCount; i++)
-            this.transform.GetChild(i).gameObject.SetActive(false);
+        //for (int i = 0; i < this.transform.childCount; i++)
+        //    this.transform.GetChild(i).gameObject.SetActive(false);
     }
 
     private void Start()
     {
-        for (int i = 0; i < this.transform.childCount; i++)
-            this.transform.GetChild(i).gameObject.SetActive(true);
+        //for (int i = 0; i < this.transform.childCount; i++)
+        //    this.transform.GetChild(i).gameObject.SetActive(true);
     }
 }

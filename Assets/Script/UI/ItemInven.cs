@@ -51,7 +51,7 @@ public class ItemInven : MonoBehaviour
                 if (ItemBox.kind == itemkind.CONSUM)
                 {
                     //회복템 효과를 게임매니저로 넘겨줘야한다.
-                    if (sPlayerInfo.HP < sPlayerInfo.MAXHP)
+                    if (sPlayerInfo.HP < sPlayerInfo.MAXHP || sPlayerInfo.MP < sPlayerInfo.MAXMP)
                     {
                         if (ItemBox.name == "치즈" || ItemBox.name == "범위 체력 문서")
                         {

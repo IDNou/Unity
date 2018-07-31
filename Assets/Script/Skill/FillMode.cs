@@ -28,13 +28,31 @@ public class FillMode : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.K))
         {
-            if (EnableSkill)
+            //if (EnableSkill)
+            //{
+            //    EnableSkill = false;
+            //    SetSkill = false;
+            //    uiSp.fillAmount = 0.0f;
+            //}
+            //else
+            //{
+                EnableSkill = true;
+                uiSp.fillAmount = 1.0f;
+            //}
+        }
+
+        if(Player.GetComponent<Status>().Level == 1)
+        {
+            if(this.transform.parent.name == "Meteo")
             {
-                EnableSkill = false;
-                SetSkill = false;
-                uiSp.fillAmount = 0.0f;
+                EnableSkill = true;
+                uiSp.fillAmount = 1.0f;
             }
-            else
+        }
+
+        if(Player.GetComponent<Status>().Level == 6)
+        {
+            if (this.transform.parent.name == "PowerMeteo")
             {
                 EnableSkill = true;
                 uiSp.fillAmount = 1.0f;
@@ -50,7 +68,7 @@ public class FillMode : MonoBehaviour
             }
 
             if (uiSp.fillAmount < 1.0f)
-                uiSp.fillAmount += Time.deltaTime / coolTime; // 10초 쿨
+                uiSp.fillAmount += Time.deltaTime / coolTime; // 쿨타임이 정해졌다.
         }
         else
         {

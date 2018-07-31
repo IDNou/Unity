@@ -44,6 +44,7 @@ public class PlayerAction : MonoBehaviour
             Meteo.GetComponent<Attack>().ATK = 100.0f;
             Meteo.GetComponent<Attack>().Enermy = this.GetComponentInParent<PlayerControl>().Enermy;
             Meteo.GetComponent<Attack>().Master = this.transform.parent.gameObject;
+            //this.GetComponentInParent<Status>().MP -= 80;
         }
     }
 
@@ -65,6 +66,7 @@ public class PlayerAction : MonoBehaviour
         PowerMeteo.GetComponent<Fireball>().ATK = 300.0f;
         PowerMeteo.GetComponent<Fireball>().Destination = this.GetComponentInParent<PlayerControl>().goIndicator.transform.position;
         PowerMeteo.GetComponent<Fireball>().Master = this.transform.parent.gameObject;
+        //this.GetComponentInParent<Status>().MP -= 150;
 
     }
 

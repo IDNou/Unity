@@ -5,14 +5,30 @@ using UnityEngine.SceneManagement;
 
 public class MainButtonScript : MonoBehaviour
 {
+    private UIButton StartBtn;
+    private UIButton OptionBtn;
+    private UIButton ExitBtn;
+    private GameObject OptionPanel;
+
+    private void Start()
+    {
+        StartBtn = this.transform.Find("Start").GetComponent<UIButton>();
+        OptionBtn = this.transform.Find("Option").GetComponent<UIButton>();
+        ExitBtn = this.transform.Find("Exit").GetComponent<UIButton>();
+        OptionPanel = GameObject.Find("UI Root/Camera/OptionPanel");
+    }
+
     public void GameStart()
     {
+        ActiveButton(false);
         SceneLoadManager.Instance.SendMessage("NextScene");
     }
 
     public void GameOption()
     {
-
+        ActiveButton(false);
+        OptionPanel.SetActive(true);
+        OptionPanel.GetComponent<OptionSound>().SetSoundVolume();
     }
 
     public void GameExit()
@@ -22,5 +38,13 @@ public class MainButtonScript : MonoBehaviour
         #else
                     Application.Quit();
         #endif
+    }
+
+
+    public void ActiveButton(bool isActive)
+    {
+        StartBtn.gameObject.SetActive(isActive);
+        OptionBtn.gameObject.SetActive(isActive);
+        ExitBtn.gameObject.SetActive(isActive);
     }
 }

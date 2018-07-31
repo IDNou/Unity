@@ -30,13 +30,13 @@ public class SceneLoadManager : MonoBehaviour
     {
         GameObject MainPanel = GameObject.Find("MainBackGround");
 
-        foreach (Transform gObject in MainPanel.GetComponentsInChildren<Transform>())
-        {
-            if(gObject.GetComponent<UIButton>())
-            {
-                gObject.gameObject.SetActive(false);
-            }
-        }
+        //foreach (Transform gObject in MainPanel.GetComponentsInChildren<Transform>())
+        //{
+        //    if(gObject.GetComponent<UIButton>())
+        //    {
+        //        gObject.gameObject.SetActive(false);
+        //    }
+        //}
 
         progressBar = Instantiate(Resources.Load<UIProgressBar>("ect_/LoadingBar"), MainPanel.transform);
         LoadingLabel = Instantiate(Resources.Load<UILabel>("ect_/LoadingLabel"), MainPanel.transform);

@@ -169,10 +169,9 @@ public class PlayerControl : MonoBehaviour
             isAttackCursor = true;
             ChaingeCursor(true);
         }
-        else if(btnMeteo.GetComponentInChildren<FillMode>().AbleSkil() && Input.GetKeyDown(KeyCode.T)) //메테오
+        else if(btnMeteo.GetComponentInChildren<FillMode>().AbleSkil() /* && this.GetComponent<Status>().MP >= 80 */ && Input.GetKeyDown(KeyCode.T)) //메테오
         {
             isAttack = false;
-
             isMeteo = true;
             ChaingeCursor(true);
         }
@@ -182,7 +181,7 @@ public class PlayerControl : MonoBehaviour
             isIndicate = true;
             isRainOfFire = true;
         }
-        else if(btnPowerMeteo.GetComponentInChildren<FillMode>().AbleSkil() && Input.GetKeyDown(KeyCode.W)) // 팜
+        else if(btnPowerMeteo.GetComponentInChildren<FillMode>().AbleSkil() /* && this.GetComponent<Status>().MP >= 150 */ &&Input.GetKeyDown(KeyCode.W)) // 팜
         {
             isAttack = false;
             isIndicate = true;
