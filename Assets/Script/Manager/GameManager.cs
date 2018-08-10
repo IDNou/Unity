@@ -151,12 +151,12 @@ public class GameManager : MonoBehaviour
             {
                 PlayerStatus.gameObject.SetActive(true);
                 PlayerStatus.SendMessage("SetActiveMyProgressBar");
-                EnermyStatus.GetComponent<PlayerControl>().enabled = false;
-                EnermyStatus.GetComponent<NavMeshAgent>().enabled = false;
+                PlayerStatus.GetComponent<PlayerControl>().enabled = false;
+                PlayerStatus.GetComponent<NavMeshAgent>().enabled = false;
                 PlayerStatus.transform.position = new Vector3(45, 0, -1);
                 //Camera.main.transform.position = new Vector3(45, 5, -4);
-                EnermyStatus.GetComponent<PlayerControl>().enabled = true;
-                EnermyStatus.GetComponent<NavMeshAgent>().enabled = true;
+                PlayerStatus.GetComponent<PlayerControl>().enabled = true;
+                PlayerStatus.GetComponent<NavMeshAgent>().enabled = true;
                 Camera.main.gameObject.GetComponent<CameraContol>().isControlStop = true;
                 PlayerStatus.SendMessage("FullStatus");
                 isPlayerDie = false;

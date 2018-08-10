@@ -123,14 +123,29 @@ public class PlayerControl : MonoBehaviour
             }
             else if(isRainOfFire)
             {
-                isIndicate = false;
-                isRainOfFire = false;
-                ChaingeCursor(false);
-                disableIndicator();
-                anim.CrossFade(SKILL1.name);
-                navMesh.ResetPath();
+                if (Vector3.Distance(this.transform.position, goIndicator.transform.position) < 5.0f)
+                {
+                    isIndicate = false;
+                    isRainOfFire = false;
+                    ChaingeCursor(false);
+                    disableIndicator();
+                    anim.CrossFade(SKILL1.name);
+                    navMesh.ResetPath();
 
-                StartCoroutine(this.GetComponentInChildren<PlayerAction>().StartSkill(2));
+                    this.transform.LookAt(goIndicator.transform.position);
+                    btnRainOfFire.GetComponentInChildren<FillMode>().SetCoolTime();
+                    StartCoroutine(this.GetComponentInChildren<PlayerAction>().StartSkill(2));
+                }
+                else
+                {
+                    isMove = true;
+                    Dest = goIndicator.transform.position;
+                    MoveOrder(Dest);
+                    anim.CrossFade(MOVE.name);
+
+                    ChaingeCursor(false);
+                    disableIndicator();
+                }
             }
             else if(isPowerMeteo)
             {
@@ -143,6 +158,7 @@ public class PlayerControl : MonoBehaviour
                     anim.CrossFade(SKILL1.name);
                     navMesh.ResetPath();
 
+                    this.transform.LookAt(goIndicator.transform.position);
                     btnPowerMeteo.GetComponentInChildren<FillMode>().SetCoolTime();
                     StartCoroutine(this.GetComponentInChildren<PlayerAction>().StartSkill(3));
                 }
@@ -175,7 +191,7 @@ public class PlayerControl : MonoBehaviour
             isMeteo = true;
             ChaingeCursor(true);
         }
-        else if(btnRequidFire.GetComponentInChildren<FillMode>().AbleSkil() && Input.GetKeyDown(KeyCode.F)) // 레인파이어
+        else if(btnRainOfFire.GetComponentInChildren<FillMode>().AbleSkil() /* && this.GetComponent<Status>().MP >= 80 */ && Input.GetKeyDown(KeyCode.F)) // 임페일
         {
             isAttack = false;
             isIndicate = true;

@@ -71,7 +71,7 @@ public class ItemController : MonoBehaviour
         if (itemInfo.RecoveryMP > 0)
             distription += "MP회복력: " + itemInfo.RecoveryMP.ToString() + "\n";
 
-        distription += "설명: " + itemInfo.comment;
+        //distription += "설명: " + itemInfo.comment;
 
         itemInfoDiscrip.text = distription;
         itemBuyButton.sItemInfo = itemInfo;

@@ -35,7 +35,7 @@ public class MinionContol : MonoBehaviour
         {
             if(this.gameObject.tag == "NaelMinion")
             {
-                if(col.gameObject.tag == "UndeadMinion" || col.gameObject.tag == "UndeadTower")
+                if(col.gameObject.tag == "UndeadMinion" || col.gameObject.tag == "UndeadTower" || col.gameObject.tag == "Enermy")
                 {
                     if(Vector3.Distance(this.transform.position,col.transform.position) < MaxDist)
                     {
@@ -46,7 +46,7 @@ public class MinionContol : MonoBehaviour
             }
             else
             {
-                if(col.gameObject.tag == "NaelMinion" || col.gameObject.tag == "NaelTower")
+                if(col.gameObject.tag == "NaelMinion" || col.gameObject.tag == "NaelTower" || col.gameObject.tag == "Player")
                 {
                     if (Vector3.Distance(this.transform.position, col.transform.position) < MaxDist)
                     {

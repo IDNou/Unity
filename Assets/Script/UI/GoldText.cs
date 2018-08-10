@@ -10,11 +10,13 @@ public class GoldText : MonoBehaviour
     private Camera uiCamera;
 
     private Vector3 GoldTextPos;
+    private Vector3 screenPos;
 
     private void Start()
     {
         targetCamera = Camera.main;
         uiCamera = this.GetComponentInParent<Camera>();
+        //screenPos = targetCamera.WorldToScreenPoint(target.transform.position);
     }
 
     private void Update()

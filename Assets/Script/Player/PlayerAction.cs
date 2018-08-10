@@ -6,6 +6,7 @@ public class PlayerAction : MonoBehaviour
 {
     public Transform FirePos;
     public GameObject FireBall;
+    public GameObject impail;
     public GameObject goMeteo;
 
     private void Awake()
@@ -48,11 +49,15 @@ public class PlayerAction : MonoBehaviour
         }
     }
 
-    //private void RainOfFire()
-    //{
-    //    btnRainOfFire.GetComponentInChildren<FillMode>().CoolTime();
-    //    print("Rain");
-    //}
+    private void RainOfFire()
+    {
+        GameObject Impail = Instantiate(impail);
+        Impail.transform.position = this.gameObject.transform.position;
+        Impail.transform.rotation = Quaternion.Euler(new Vector3(-90.0f, this.transform.root.transform.eulerAngles.y - 90.0f, 0));
+        Impail.GetComponentInChildren<Impail>().Master = this.transform.parent.gameObject;
+        //this.GetComponentInParent<Status>().MP -= 80;
+
+    }
 
     private void PowerMeteo()
     {
@@ -80,7 +85,7 @@ public class PlayerAction : MonoBehaviour
                 Meteo();
                 break;
             case 2:
-                //RainOfFire();
+                RainOfFire();
                 break;
             case 3:
                 PowerMeteo();

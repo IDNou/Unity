@@ -13,6 +13,7 @@ public class SoundManager : MonoBehaviour
             {
                 GameObject gameObject = new GameObject("_SoundManager");
                 sInstance = gameObject.AddComponent<SoundManager>();
+                //DontDestroyOnLoad(gameObject);
             }
             return sInstance;
         }
@@ -28,7 +29,7 @@ public class SoundManager : MonoBehaviour
         if (sInstance == null)
                 sInstance = this;
 
-        DontDestroyOnLoad(this.gameObject);
+        DontDestroyOnLoad(gameObject);
 
         bgmClips = new Dictionary<string, AudioClip>();
         foreach (AudioClip audio in Resources.LoadAll<AudioClip>("Sound"))

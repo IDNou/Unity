@@ -143,16 +143,17 @@ public class Status : MonoBehaviour {
                 }
                 else
                 {
-                    this.gameObject.SetActive(false);
-                    myProgressBar.gameObject.SetActive(false);
-
                     if (this.tag == "Player")
                     {
+                        this.gameObject.SetActive(false);
+                        myProgressBar.gameObject.SetActive(false);
                         GameManager.Instance.isPlayerDie = true;
                         //프로그래스바 설정해줘야한다
                     }
                     else if (this.tag == "Enermy")
                     {
+                        this.gameObject.SetActive(false);
+                        myProgressBar.gameObject.SetActive(false);
                         GameManager.Instance.isEnermyDie = true;
                     }
                 }

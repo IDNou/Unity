@@ -5,22 +5,24 @@ using UnityEngine;
 public class Impail : MonoBehaviour
 {
     private float ATK;
-    private List<GameObject> test;
+    private List<GameObject> MonsterColliderList;
     private float deadTime;
     private float fTime;
-    
+
+    public GameObject Master;
+
     private void Start()
     {
-        test = new List<GameObject>();
+        MonsterColliderList = new List<GameObject>();
         fTime = 0;
-        deadTime = this.transform.root.GetComponent<ParticleSystem>().duration;
+        deadTime = this.transform.root.GetComponent<ParticleSystem>().main.duration;
     }
 
     private void Update()
     {
         fTime += Time.deltaTime;
 
-        if (fTime > deadTime)
+        if (this.transform.root.GetComponent<ParticleSystem>().isStopped)//fTime > deadTime)
         {
             //foreach (GameObject go in test)
             //{
@@ -30,7 +32,8 @@ public class Impail : MonoBehaviour
             //    }
             //}
             fTime = 0;
-            test.Clear();
+            MonsterColliderList.Clear();
+            Destroy(this.transform.root.gameObject);
             //this.transform.root.gameobject.setactive(false);
         }
 
@@ -38,10 +41,14 @@ public class Impail : MonoBehaviour
 
     private void OnParticleCollision(GameObject other)
     {
-        if (!test.Contains(other))
+        if (!MonsterColliderList.Contains(other) && other.tag != "Player" && other.tag != "NaelTower" && other.tag != "UndeadTower" && other.tag != "NaelMinion")
         {
-            print(other.name);
-            test.Add(other);
+            if(other.GetComponent<Status>())
+            {
+                other.GetComponent<Status>().Marker = Master;
+                other.GetComponent<Status>().HP -= 100.0f;
+            }
+            MonsterColliderList.Add(other);
         }
     }
 }

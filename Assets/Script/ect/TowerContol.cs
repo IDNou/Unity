@@ -24,7 +24,7 @@ public class TowerContol : MonoBehaviour
         colliders = Physics.OverlapSphere(this.transform.position, this.GetComponent<SphereCollider>().radius);
         foreach (Collider col in colliders)
         {
-            if(this.gameObject.tag == "UndeadTower" && col.gameObject.tag == "NaelMinion")
+            if(this.gameObject.tag == "UndeadTower" && (col.gameObject.tag == "NaelMinion" || col.gameObject.tag == "Player"))
             {
                 if (Vector3.Distance(this.transform.position, col.transform.position) < MaxDist)
                 {
@@ -32,7 +32,7 @@ public class TowerContol : MonoBehaviour
                     MaxDist = Vector3.Distance(this.transform.position, col.transform.position);
                 }
             }
-            else if (this.gameObject.tag == "NaelTower" && col.gameObject.tag == "UndeadMinion")
+            else if (this.gameObject.tag == "NaelTower" && (col.gameObject.tag == "UndeadMinion" || col.gameObject.tag == "Enermy"))
             {
                 if (Vector3.Distance(this.transform.position, col.transform.position) < MaxDist)
                 {

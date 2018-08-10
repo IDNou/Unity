@@ -17,6 +17,7 @@ public class LoadManager : MonoBehaviour
             {
                 GameObject gObject = new GameObject("_LoadManager");
                 sInstance = gObject.AddComponent<LoadManager>();
+                DontDestroyOnLoad(gObject);
             }
             return sInstance;
         }
@@ -27,9 +28,11 @@ public class LoadManager : MonoBehaviour
 
     public void FileLoad()
     {
-        string Path = File.ReadAllText("JSON/item.json" );
+        string Path = File.ReadAllText(Application.persistentDataPath +"/" + DeFine.prev + DeFine.item);
+        //Application.streamingAssetsPath;
+        //Application.dataPath;
         ItemJson = JObject.Parse(Path);
-        Path = File.ReadAllText("JSON/status.json");
+        Path = File.ReadAllText(Application.persistentDataPath + "/" + DeFine.prev + DeFine.status);
         StatusJson = JObject.Parse(Path);
     }
 }

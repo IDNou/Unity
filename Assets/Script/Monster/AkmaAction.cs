@@ -28,6 +28,7 @@ public class AkmaAction : MonoBehaviour
             baseAttack.GetComponent<Attack>().ATK = (int)(myStatus.ATK - (myStatus.ATK * enermyStatus.DEF / (enermyStatus.DEF + 100)));
             baseAttack.GetComponent<Attack>().Enermy = this.GetComponentInParent<AkmaControl>().Enermy;
             baseAttack.GetComponent<Attack>().Master = this.transform.parent.gameObject;
+            this.GetComponentInParent<AkmaControl>().isAttackCharge = false;
         }
     }
 
