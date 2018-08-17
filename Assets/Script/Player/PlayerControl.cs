@@ -8,6 +8,7 @@ public class PlayerControl : MonoBehaviour
 {
     private NavMeshAgent navMesh = null;
     private Vector3 Dest;
+    private Vector3 DumyDest;
     private Animation anim;
     public GameObject Enermy;
     public GameObject goIndicator;
@@ -29,6 +30,7 @@ public class PlayerControl : MonoBehaviour
 
     private bool isAttackCursor = false;
     private bool isAttack = false;
+    private bool isAttackDDang = false;
     private bool isMove = false;
     private bool isCharge = true;
     private bool isIndicate = false;
@@ -39,6 +41,7 @@ public class PlayerControl : MonoBehaviour
     private bool isPowerMeteo = false;
 
     private float animDelay = 0;
+    private float MaxDist = 9999;
 
     private void Awake()
     {
@@ -53,7 +56,7 @@ public class PlayerControl : MonoBehaviour
     {
         //RayCastingEnermy(); 좀더 손좀봐야할뜻
 
-        if (Input.GetKeyDown(KeyCode.Mouse1))
+        if (Input.GetKeyDown(KeyCode.Mouse1))//우클릭
         {
             Ray ray = GameObject.Find("UI Root").GetComponentInChildren<Camera>().ScreenPointToRay(Input.mousePosition);
 
@@ -64,13 +67,13 @@ public class PlayerControl : MonoBehaviour
                 RayCastingToDiscriminate();
             }
         }
-        else if(Input.GetKeyDown(KeyCode.Mouse0))
+        else if(Input.GetKeyDown(KeyCode.Mouse0)) // 좌클릭
         {
             if(isAttackCursor)
             {
-                isAttackCursor = false;
                 //생각에 수정해야할수가 있음 적클릭했을때 아마 오류가날꺼같음
                 RayCastingToDiscriminate();
+                isAttackCursor = false;
                 ChaingeCursor(false);
             }
             else if(isMeteo)
@@ -187,21 +190,45 @@ public class PlayerControl : MonoBehaviour
         }
         else if(btnMeteo.GetComponentInChildren<FillMode>().AbleSkil() /* && this.GetComponent<Status>().MP >= 80 */ && Input.GetKeyDown(KeyCode.T)) //메테오
         {
-            isAttack = false;
-            isMeteo = true;
-            ChaingeCursor(true);
+            if (this.GetComponent<Status>().MP >= 80)
+            {
+                isAttack = false;
+                isMeteo = true;
+                ChaingeCursor(true);
+            }
+            else
+            {
+                if (!SoundManager.Instance.EFXPlayingSound("NoEnergy"))
+                    SoundManager.Instance.EFXPlaySound("NoEnergy");
+            }
         }
         else if(btnRainOfFire.GetComponentInChildren<FillMode>().AbleSkil() /* && this.GetComponent<Status>().MP >= 80 */ && Input.GetKeyDown(KeyCode.F)) // 임페일
         {
-            isAttack = false;
-            isIndicate = true;
-            isRainOfFire = true;
+            if (this.GetComponent<Status>().MP >= 80)
+            {
+                isAttack = false;
+                isIndicate = true;
+                isRainOfFire = true;
+            }
+            else
+            {
+                if (!SoundManager.Instance.EFXPlayingSound("NoEnergy"))
+                    SoundManager.Instance.EFXPlaySound("NoEnergy");
+            }
         }
         else if(btnPowerMeteo.GetComponentInChildren<FillMode>().AbleSkil() /* && this.GetComponent<Status>().MP >= 150 */ &&Input.GetKeyDown(KeyCode.W)) // 팜
         {
-            isAttack = false;
-            isIndicate = true;
-            isPowerMeteo = true;
+            if (this.GetComponent<Status>().MP >= 150)
+            {
+                isAttack = false;
+                isIndicate = true;
+                isPowerMeteo = true;
+            }
+            else
+            {
+                if (!SoundManager.Instance.EFXPlayingSound("NoEnergy"))
+                    SoundManager.Instance.EFXPlaySound("NoEnergy");
+            }
         }
 
         if (Enermy)
@@ -219,22 +246,18 @@ public class PlayerControl : MonoBehaviour
             //    MoveOrder(Dest);
             //    anim.CrossFade(MOVE.name);
             //}
-            if (Enermy.GetComponent<Status>() && Enermy.GetComponent<Status>().HP < 0)
-            {
-                Enermy = null;
-                isMove = false;
-                isAttack = false;
-            }
-
             if (isMove)
             {
-                Dest = Enermy.transform.position;
-                MoveOrder(Dest);
+                //if (Enermy)
+                //{
+                //    Dest = Enermy.transform.position;
+                //    MoveOrder(Dest);
+                //}
 
               
                 if (isBaseAttack)
                 {
-                    if (Vector3.Distance(this.transform.position, Enermy.transform.position) < 3.0f)
+                    if (Vector3.Distance(this.transform.position, Enermy.transform.position) <= 3.0f)
                     {
                         isMove = false;
                         isBaseAttack = false;
@@ -269,17 +292,20 @@ public class PlayerControl : MonoBehaviour
             {
                 if (isCharge)
                 {
-                    isCharge = false;
-                    animDelay = ATTACK.length * 2.0f;
-                    if (Vector3.Distance(this.transform.position, Enermy.transform.position) < 3.0f)
+                    if (Vector3.Distance(this.transform.position, Enermy.transform.position) <= 3.0f)
                     {
+                        isCharge = false;
+                        animDelay = ATTACK.length * 2.0f;
                         this.transform.LookAt(Enermy.transform);
+                        DumyDest = Dest;
+                        navMesh.ResetPath();
                         anim.CrossFade(ATTACK.name); // 발사
                     }
                     else
                     {
                         isMove = true;
                         isBaseAttack = true;
+                        DumyDest = Dest;
                         Dest = Enermy.transform.position;
                         MoveOrder(Dest);
                         anim.CrossFade(MOVE.name);
@@ -288,6 +314,7 @@ public class PlayerControl : MonoBehaviour
                 else
                 {
                     this.transform.LookAt(Enermy.transform);
+
                     //요기는 쪼꼼나중에 해보자!
                     //if (Vector3.Distance(this.transform.position, Enermy.transform.position) < 3.0f)
                     //{
@@ -296,14 +323,83 @@ public class PlayerControl : MonoBehaviour
                 }
             }
 
+            if (Enermy.GetComponent<Status>() && Enermy.GetComponent<Status>().HP <= 0)
+            {
+                Enermy = null;
+                //isMove = false;
+                //isAttack = false;
+                if (DumyDest.x != 0 && DumyDest.z != 0)
+                {
+                    isIndicate = false;
+                    disableIndicator();
+                    isAttackCursor = false;
+                    isMeteo = false;
+                    isPowerMeteo = false;
+                    ChaingeCursor(false);
+
+                    Dest = DumyDest;
+                    DumyDest = new Vector3(0, 0, 0);
+                    isMove = true;
+                    isAttack = false;
+                    Enermy = null;
+                    MoveOrder(Dest);
+                    anim.CrossFade(MOVE.name);
+                }
+            }
+
             if (Enermy && !Enermy.activeSelf)
             {
                 anim.CrossFade(IDLE.name);
                 Enermy = null;
+
+                if (DumyDest.x != 0 && DumyDest.z != 0)
+                {
+                    isIndicate = false;
+                    disableIndicator();
+                    isAttackCursor = false;
+                    isMeteo = false;
+                    isPowerMeteo = false;
+                    ChaingeCursor(false);
+
+                    Dest = DumyDest;
+                    DumyDest = new Vector3(0, 0, 0);
+                    isMove = true;
+                    isAttack = false;
+                    Enermy = null;
+                    MoveOrder(Dest);
+                    anim.CrossFade(MOVE.name);
+                }
             }
         }
         else
         {
+            if (isAttackDDang)
+            {
+                MaxDist = 9999;
+                Collider[] colliders;
+                colliders = Physics.OverlapSphere(this.transform.position, 3.0f);
+                foreach (Collider col in colliders)
+                {
+                    if (col.gameObject.tag == "UndeadMinion" || col.gameObject.tag == "UndeadTower" || col.gameObject.tag == "Enermy")
+                    {
+                        if (Vector3.Distance(this.transform.position, col.transform.position) < MaxDist)
+                        {
+                            Enermy = col.gameObject;
+                            MaxDist = Vector3.Distance(this.transform.position, col.transform.position);
+                        }
+                    }
+                }
+
+                if(Enermy)
+                {
+                    isAttack = true;
+                    isMove = false;
+                    this.transform.LookAt(Enermy.transform);
+                    anim.CrossFade(IDLE.name);
+                    navMesh.ResetPath();
+                }
+            }
+
             if (isPowerMeteo && !isIndicate)
             {
                 if (Vector3.Distance(this.transform.position, goIndicator.transform.position) < 5.0f)
@@ -333,6 +429,7 @@ public class PlayerControl : MonoBehaviour
         if (isMove && Vector3.Distance(this.transform.position, Dest) < 0.1f)
         {
             isMove = false;
+            isAttackDDang = false;
             this.transform.position = Dest;
             navMesh.ResetPath();
             anim.CrossFade(IDLE.name);
@@ -384,11 +481,12 @@ public class PlayerControl : MonoBehaviour
 
                 if (Enermy)
                 {
-                    if (Vector3.Distance(this.transform.position, Enermy.transform.position) < 3.0f)
+                    if (Vector3.Distance(this.transform.position, Enermy.transform.position) <= 3.0f)
                     {
                         isAttack = true;
                         isMove = false;
                         this.transform.LookAt(Enermy.transform);
+                        anim.CrossFade(IDLE.name);
                         navMesh.ResetPath();
                     }
                     else
@@ -403,6 +501,17 @@ public class PlayerControl : MonoBehaviour
             }
             else
             {
+                //어택땅 혹은 무빙
+
+                if (isAttackCursor) //어택땅
+                {
+                    isAttackDDang = true;
+                }
+                else
+                {
+                    isAttackDDang = false;
+                }
+
                 isIndicate = false;
                 disableIndicator();
                 isAttackCursor = false;
@@ -416,6 +525,7 @@ public class PlayerControl : MonoBehaviour
                 Enermy = null;
                 MoveOrder(Dest);
                 anim.CrossFade(MOVE.name);
+                
             }
         }
     }

@@ -47,6 +47,7 @@ public class SoundManager : MonoBehaviour
             efxSource[i] = this.gameObject.AddComponent<AudioSource>();
         }
 
+        BGMPlay("MainScreen");
         //efxSource = this.gameObject.AddComponent<AudioSource>();
     }
 
@@ -72,10 +73,44 @@ public class SoundManager : MonoBehaviour
         //efxSource.Play();
     }
 
+    public bool EFXPlayingSound(string EFXName)
+    {
+        bool isPlaying = false;
+
+        for (int i = 0; i < 7; i++)
+        {
+            if(efxSource[i].isPlaying)
+            {
+                if (efxSource[i].clip.name == EFXName)
+                {
+                    isPlaying = true;
+                    break;
+                }
+            }
+        }
+
+        return isPlaying;
+    }
+
     public void BGMPlay(string bgmName)
     {
         bgmSource.clip = bgmClips[bgmName];
         bgmSource.Play();
+    }
+
+    public bool BGMPlayingSound(string BGMName)
+    {
+        bool isPlaying = false;
+        
+        if(bgmSource.isPlaying)
+        {
+            if(bgmSource.clip.name == BGMName)
+            {
+                isPlaying = true;
+            }
+        }
+
+        return isPlaying;
     }
 
     public void BGMStopSound()

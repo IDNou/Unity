@@ -15,7 +15,8 @@ public class AkmaControl : MonoBehaviour
     private bool isAttack = false; // 공격중인가?
     private bool isGoAttack = false; // 미니언 있으니 공격해도된다
     public bool isAttackCharge;
-    private bool isAbsoluteForward;
+    private bool isAbsoluteForward; //앞으로 절대적으로 전진해서 때리게끔하기위해서
+    private bool isDest;
 
     private Vector3 Dest;
 
@@ -25,6 +26,7 @@ public class AkmaControl : MonoBehaviour
         anim = this.GetComponentInChildren<Animator>();
         isAttackCharge = true;
         isAbsoluteForward = false;
+        isDest = false;
     }
 
     private void Update()
@@ -52,19 +54,22 @@ public class AkmaControl : MonoBehaviour
                     if (SearchForwardMinion("UndeadMinion"))
                     {
                         print("전진");
-                      
-                        Vector3 towerPos = GameObject.FindGameObjectWithTag("NaelTower").transform.position;
-                        Dest = new Vector3(Random.Range(towerPos.x, towerPos.x + 2), towerPos.y, Random.Range(towerPos.z, towerPos.z - 1));
-                        MoveToDestination(Dest);
-                        
+                        if (GameObject.FindGameObjectWithTag("NaelTower"))
+                        {
+                            Vector3 towerPos = GameObject.FindGameObjectWithTag("NaelTower").transform.position;
+                            Dest = new Vector3(Random.Range(towerPos.x, towerPos.x + 2), towerPos.y, Random.Range(towerPos.z, towerPos.z - 1));
+                            MoveToDestination(Dest);
+                        }
                     }
                     else
                     {
                         print("뒤미니언 찾으러 간다");
-                        
-                        Vector3 towerPos = GameObject.FindGameObjectWithTag("UndeadTower").transform.position;
-                        Dest = new Vector3(Random.Range(towerPos.x - 2, towerPos.x), towerPos.y, Random.Range(towerPos.z, towerPos.z - 1));
-                        MoveToDestination(Dest);
+                        if (GameObject.FindGameObjectWithTag("UndeadTower"))
+                        {
+                            Vector3 towerPos = GameObject.FindGameObjectWithTag("UndeadTower").transform.position;
+                            Dest = new Vector3(Random.Range(towerPos.x - 2, towerPos.x), towerPos.y, Random.Range(towerPos.z, towerPos.z - 1));
+                            MoveToDestination(Dest);
+                        }
                         
                     }
 
@@ -79,14 +84,17 @@ public class AkmaControl : MonoBehaviour
                 }
                 else
                 {
-                    if (SearchForwardMinion("UndeadMinion"))
+                    if (!isDest && SearchForwardMinion("UndeadMinion")) // 움직이고있지만 미니언이랑 있는지 몰라서 검색해봄 실질적으로 공격하러가야하는곳
                     {
                         isGoAttack = true;
                         if (!navMesh.hasPath)
                         {
-                            Vector3 towerPos = GameObject.FindGameObjectWithTag("NaelTower").transform.position;
-                            Dest = new Vector3(Random.Range(towerPos.x, towerPos.x + 2), towerPos.y, Random.Range(towerPos.z, towerPos.z - 1));
-                            MoveToDestination(Dest);
+                            if (GameObject.FindGameObjectWithTag("NaelTower"))
+                            {
+                                Vector3 towerPos = GameObject.FindGameObjectWithTag("NaelTower").transform.position;
+                                Dest = new Vector3(Random.Range(towerPos.x, towerPos.x + 2), towerPos.y, Random.Range(towerPos.z, towerPos.z - 1));
+                                MoveToDestination(Dest);
+                            }
                         }
                     }
                 }
@@ -96,6 +104,7 @@ public class AkmaControl : MonoBehaviour
                     isMove = false;
                     isAttack = false;
                     this.transform.position = Dest;
+                    isDest = false;
                     navMesh.ResetPath();
                     anim.SetFloat("isMove", 0);
                 }
@@ -118,8 +127,11 @@ public class AkmaControl : MonoBehaviour
                         //졸렬하게 도망가자
                         isGoAttack = false;
                         isMove = true;
-                        Vector3 towerPos = GameObject.FindGameObjectWithTag("UndeadTower").transform.position;
-                        Dest = new Vector3(Random.Range(towerPos.x - 2, towerPos.x), towerPos.y, Random.Range(towerPos.z, towerPos.z - 1));
+                        if (GameObject.FindGameObjectWithTag("UndeadTower"))
+                        {
+                            Vector3 towerPos = GameObject.FindGameObjectWithTag("UndeadTower").transform.position;
+                            Dest = new Vector3(Random.Range(towerPos.x - 2, towerPos.x), towerPos.y, Random.Range(towerPos.z, towerPos.z - 1));
+                        }
                         if (!navMesh.hasPath)
                             MoveToDestination(Dest);
                     }
@@ -133,8 +145,11 @@ public class AkmaControl : MonoBehaviour
                             //공격하러 가즈아
                             isMove = true;
                             isGoAttack = true;
-                            Vector3 towerPos = GameObject.FindGameObjectWithTag("NaelTower").transform.position;
-                            Dest = new Vector3(Random.Range(towerPos.x, towerPos.x + 2), towerPos.y, Random.Range(towerPos.z, towerPos.z - 1));
+                            if (GameObject.FindGameObjectWithTag("NaelTower"))
+                            {
+                                Vector3 towerPos = GameObject.FindGameObjectWithTag("NaelTower").transform.position;
+                                Dest = new Vector3(Random.Range(towerPos.x, towerPos.x + 2), towerPos.y, Random.Range(towerPos.z, towerPos.z - 1));
+                            }
                             if (!navMesh.hasPath)
                                 MoveToDestination(Dest);
                         }
@@ -147,8 +162,15 @@ public class AkmaControl : MonoBehaviour
                     {
                         print("돌아간다");
                         isMove = true;
-                        Vector3 towerPos = GameObject.FindGameObjectWithTag("UndeadTower").transform.position;
-                        Dest = new Vector3(Random.Range(towerPos.x - 2, towerPos.x), towerPos.y, Random.Range(towerPos.z, towerPos.z - 1));
+                        if (GameObject.FindGameObjectWithTag("UndeadTower"))
+                        {
+                            if (!isDest)
+                            {
+                                Vector3 towerPos = GameObject.FindGameObjectWithTag("UndeadTower").transform.position;
+                                Dest = new Vector3(Random.Range(towerPos.x - 2, towerPos.x), towerPos.y, Random.Range(towerPos.z, towerPos.z - 1));
+                                isDest = true;
+                            }
+                        }
                         if (!navMesh.hasPath)
                             MoveToDestination(Dest);
                     }
@@ -215,39 +237,40 @@ public class AkmaControl : MonoBehaviour
 
         if (Enermy)
         {
-            if (Vector3.Distance(this.transform.position, Enermy.transform.position) <= 3.0f)
+            if (Enermy.activeSelf == false)
             {
-                print("공격");
-                anim.SetFloat("isMove", 0);
-                this.transform.LookAt(Enermy.transform);
-
-                if (isAttackCharge)
-                {
-                    anim.SetBool("isAttack", true);
-                }
-                else
-                {
-                    anim.SetBool("isAttack", false);
-                }
-
-                if (Enermy.activeSelf == false)
-                {
-                    Enermy = null;
-                    isAttack = false;
-                    isMove = true;
-                    isGoAttack = true;
-                }
-            }
-            else
-            {
-                print("거리가 안되서 안공격");
                 Enermy = null;
                 isAttack = false;
                 isMove = true;
                 isGoAttack = true;
-                isAbsoluteForward = true;
             }
+            else
+            {
+                if (Vector3.Distance(this.transform.position, Enermy.transform.position) <= 3.0f)
+                {
+                    print("공격");
+                    anim.SetFloat("isMove", 0);
+                    this.transform.LookAt(Enermy.transform);
 
+                    if (isAttackCharge)
+                    {
+                        anim.SetBool("isAttack", true);
+                    }
+                    else
+                    {
+                        anim.SetBool("isAttack", false);
+                    }
+                }
+                else
+                {
+                    print("거리가 안되서 안공격");
+                    Enermy = null;
+                    isAttack = false;
+                    isMove = true;
+                    isGoAttack = true;
+                    isAbsoluteForward = true;
+                }
+            }
         }
     }
 

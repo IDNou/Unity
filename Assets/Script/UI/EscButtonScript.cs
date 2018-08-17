@@ -13,6 +13,7 @@ public class EscButtonScript : MonoBehaviour
 
     public void OptionButton()
     {
+        SoundManager.Instance.EFXPlaySound("ButtonClick");
         this.gameObject.SetActive(false);
         OptionPanel.SetActive(true);
         OptionPanel.GetComponent<OptionSound>().SetSoundVolume();
@@ -20,6 +21,7 @@ public class EscButtonScript : MonoBehaviour
 
     public void ExitButton()
     {
+        SoundManager.Instance.EFXPlaySound("ButtonClick");
         this.gameObject.SetActive(false);
         GameObject FadePanel = GameObject.Find("UI Root/Camera/FadeOutPanel");
         FadePanel.GetComponentInChildren<UILabel>().text = "You Lose";

@@ -18,6 +18,7 @@ public class PlayerAction : MonoBehaviour
     {
         if (this.GetComponentInParent<PlayerControl>().Enermy)
         {
+            SoundManager.Instance.EFXPlaySound("EtherealMediumHit" + Random.Range(1, 4));
             Status myStatus = GetComponentInParent<Status>();
             Status enermyStatus = this.GetComponentInParent<PlayerControl>().Enermy.GetComponent<Status>();
             GameObject baseAttack = Instantiate(FireBall);
@@ -36,6 +37,7 @@ public class PlayerAction : MonoBehaviour
     {
         if (this.GetComponentInParent<PlayerControl>().Enermy)
         {
+            SoundManager.Instance.EFXPlaySound("InfernalBirth");
             GameObject Meteo = Instantiate(FireBall);
             Meteo.transform.position = new Vector3(FirePos.position.x, FirePos.position.y + 10, FirePos.position.z);
             Vector3 dir = this.GetComponentInParent<PlayerControl>().Enermy.transform.position - Meteo.transform.position;
@@ -45,17 +47,18 @@ public class PlayerAction : MonoBehaviour
             Meteo.GetComponent<Attack>().ATK = 100.0f;
             Meteo.GetComponent<Attack>().Enermy = this.GetComponentInParent<PlayerControl>().Enermy;
             Meteo.GetComponent<Attack>().Master = this.transform.parent.gameObject;
-            //this.GetComponentInParent<Status>().MP -= 80;
+            this.GetComponentInParent<Status>().MP -= 80;
         }
     }
 
     private void RainOfFire()
     {
+        SoundManager.Instance.EFXPlaySound("ImpaleHit");
         GameObject Impail = Instantiate(impail);
         Impail.transform.position = this.gameObject.transform.position;
         Impail.transform.rotation = Quaternion.Euler(new Vector3(-90.0f, this.transform.root.transform.eulerAngles.y - 90.0f, 0));
         Impail.GetComponentInChildren<Impail>().Master = this.transform.parent.gameObject;
-        //this.GetComponentInParent<Status>().MP -= 80;
+        this.GetComponentInParent<Status>().MP -= 80;
 
     }
 
@@ -63,7 +66,8 @@ public class PlayerAction : MonoBehaviour
     {
         //여기서부터 파워메테오 UIButton을 찾아서 fillMode스크립트에 연결시켜줘야한다
         //그래야 Cooltime 함수를 SendMessage로 접근할수있는지 없는지 테스트가 가능함
-        
+
+        SoundManager.Instance.EFXPlaySound("InfernalBirth");
         GameObject PowerMeteo = Instantiate(goMeteo);
         PowerMeteo.transform.position = new Vector3(FirePos.position.x, FirePos.position.y + 10, FirePos.position.z);
         Vector3 dir = this.GetComponentInParent<PlayerControl>().goIndicator.transform.position - PowerMeteo.transform.position;
@@ -71,7 +75,7 @@ public class PlayerAction : MonoBehaviour
         PowerMeteo.GetComponent<Fireball>().ATK = 300.0f;
         PowerMeteo.GetComponent<Fireball>().Destination = this.GetComponentInParent<PlayerControl>().goIndicator.transform.position;
         PowerMeteo.GetComponent<Fireball>().Master = this.transform.parent.gameObject;
-        //this.GetComponentInParent<Status>().MP -= 150;
+        this.GetComponentInParent<Status>().MP -= 150;
 
     }
 

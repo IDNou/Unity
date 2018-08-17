@@ -23,8 +23,8 @@ public class Status : MonoBehaviour {
     public float HPRecoveryMount;
     public float MPRecoveryMount;
 
-    private UIProgressBar uiProgressBar;
-    private UIProgressBar myProgressBar;
+    private GameObject uiProgressBar;
+    private GameObject myProgressBar;
     private UILabel uiGoldText;
     private UILabel myGoldText;
 
@@ -81,7 +81,7 @@ public class Status : MonoBehaviour {
 
         if (this.tag != "Tree") // 수정중
         {
-            uiProgressBar = Resources.Load<UIProgressBar>("Progress Bar");
+            uiProgressBar = Resources.Load<GameObject>("ProgressBar");
             uiGoldText = Resources.Load<UILabel>("GoldText");
             myProgressBar = Instantiate(uiProgressBar, GameObject.Find("ProgressPanel").transform);
             myProgressBar.GetComponent<FollowProgressBar>().target = this.transform.Find("ProgressBarPos").gameObject;
@@ -108,11 +108,26 @@ public class Status : MonoBehaviour {
             {
                 if (Marker && Marker.name == "Prod" && this.tag != "Tree")
                 {
-                    GameObject.Find("_GameManager").GetComponent<GameManager>().nGold += 10; // 떨어지는돈 제어해야함
+                    int drapGold = 0;
+
+                    if(this.gameObject.tag == "Enermy")
+                    {
+                        drapGold = 300;
+                    }
+                    else if(this.gameObject.tag == "UndeadMinion")
+                    {
+                        drapGold = Random.Range(43, 78);
+                    }
+                    else if(this.gameObject.tag == "UndeadTower")
+                    {
+                        drapGold = 300;
+                    }
+
+                    GameObject.Find("_GameManager").GetComponent<GameManager>().nGold += drapGold; // 떨어지는돈 제어해야함
 
                     myGoldText = Instantiate(uiGoldText, GameObject.Find("HUDGoldPanel").transform);
                     myGoldText.GetComponent<GoldText>().target = this.gameObject;
-                    myGoldText.text = "+10Gold";
+                    myGoldText.text = "+"+ drapGold + "Gold";
                 }
 
                 if (this.tag == "NaelMinion")
@@ -127,6 +142,7 @@ public class Status : MonoBehaviour {
                 }
                 else if (this.tag == "Player")
                 {
+                    SoundManager.Instance.EFXPlaySound("HeroDies");
                     GameObject.Find("Akma").GetComponent<Status>().CUREXP += GameObject.Find("Prod").GetComponent<Status>().Level * 50;
                 }
                 else if (this.tag == "Akma")

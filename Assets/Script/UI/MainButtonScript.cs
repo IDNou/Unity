@@ -20,12 +20,14 @@ public class MainButtonScript : MonoBehaviour
 
     public void GameStart()
     {
+        SoundManager.Instance.EFXPlaySound("ButtonClick");
         ActiveButton(false);
         SceneLoadManager.Instance.SendMessage("NextScene");
     }
 
     public void GameOption()
     {
+        SoundManager.Instance.EFXPlaySound("ButtonClick");
         ActiveButton(false);
         OptionPanel.SetActive(true);
         OptionPanel.GetComponent<OptionSound>().SetSoundVolume();
@@ -33,6 +35,7 @@ public class MainButtonScript : MonoBehaviour
 
     public void GameExit()
     {
+        SoundManager.Instance.EFXPlaySound("ButtonClick");
         #if UNITY_EDITOR
                 UnityEditor.EditorApplication.isPlaying = false;
         #else

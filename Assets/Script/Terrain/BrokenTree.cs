@@ -36,6 +36,8 @@ public class BrokenTree : MonoBehaviour
                     for (int i = 0; i < this.transform.childCount; i++)
                         this.transform.GetChild(i).gameObject.isStatic = false;
 
+                    //string treeRandSound = "TreeFall" + Random.Range(1, 4);
+                    SoundManager.Instance.EFXPlaySound("TreeFall" + Random.Range(1, 4));
                     //GameObject.Find("UpdateBake").GetComponent<NavigationBaker>().reBake();
                 }
                 this.transform.Find("Tree").transform.Rotate(120.0f * Time.deltaTime, 0, 0);

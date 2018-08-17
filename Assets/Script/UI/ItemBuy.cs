@@ -38,6 +38,7 @@ public class ItemBuy : MonoBehaviour
             {
                 if (GameManager.Instance.nGold >= Item.price)
                 {
+                    SoundManager.Instance.EFXPlaySound("ButtonClick");
                     //소비아이템일 경우
                     if (Item.kind == itemkind.CONSUM)
                     {
@@ -71,6 +72,11 @@ public class ItemBuy : MonoBehaviour
                     {
                         AddItemToInven();
                     }
+                }
+                else
+                {
+                    if(!SoundManager.Instance.EFXPlayingSound("NoGold"))
+                        SoundManager.Instance.EFXPlaySound("NoGold");
                 }
             }
         }

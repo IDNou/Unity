@@ -189,6 +189,8 @@ public class GameManager : MonoBehaviour
         {
             //Time.timeScale = 0.0f;
             //패배
+            if (!SoundInstance.BGMPlayingSound("VictoryTheme"))
+                SoundInstance.BGMPlay("VictoryTheme");
             GameObject FadePanel = GameObject.Find("UI Root/Camera/FadeOutPanel");
             FadePanel.GetComponentInChildren<UILabel>().text = "You Lose";
             FadePanel.GetComponent<FadeOut>().isResultDone = true;
@@ -197,6 +199,8 @@ public class GameManager : MonoBehaviour
         {
             //Time.timeScale = 0.0f;
             //승리
+            if(!SoundInstance.BGMPlayingSound("VictoryTheme"))
+                SoundInstance.BGMPlay("VictoryTheme");
             GameObject FadePanel = GameObject.Find("UI Root/Camera/FadeOutPanel");
             FadePanel.GetComponentInChildren<UILabel>().text = "Victory!";
             FadePanel.GetComponent<FadeOut>().isResultDone = true;
@@ -234,6 +238,7 @@ public class GameManager : MonoBehaviour
 
         if(Input.GetKeyDown(KeyCode.Escape))
         {
+            SoundManager.Instance.EFXPlaySound("ButtonClick");
             if (pEscPanel.activeSelf)
                 pEscPanel.SetActive(false);
             else

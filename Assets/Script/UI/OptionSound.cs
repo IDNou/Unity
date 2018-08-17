@@ -28,6 +28,7 @@ public class OptionSound : MonoBehaviour
 
     public void DoneBtn()
     {
+        SoundManager.Instance.EFXPlaySound("ButtonClick");
         this.gameObject.SetActive(false);
         if(SceneManager.GetActiveScene().name == "Chaos_Main")
             GameObject.Find("MainBackGround").GetComponent<MainButtonScript>().ActiveButton(true);

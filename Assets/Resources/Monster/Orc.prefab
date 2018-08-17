@@ -1340,9 +1340,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2a2f0409820332d4db42f02e7c9f7085, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MaxHP: 180
+  Level: 0
+  HP: 0
+  MAXHP: 0
+  MP: 0
+  MAXMP: 0
   ATK: 20
   DEF: 10
+  SPD: 0
+  EXP: 0
+  CUREXP: 0
+  MAXEXP: 0
+  Marker: {fileID: 0}
+  isHPHealing: 0
+  isMPHealing: 0
+  HPRecoveryMount: 0
+  MPRecoveryMount: 0
 --- !u!114 &114924013960022042
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1519,7 +1532,7 @@ NavMeshAgent:
   m_Enabled: 1
   m_AgentTypeID: 0
   m_Radius: 0.3
-  m_Speed: 1.5
+  m_Speed: 1.55
   m_Acceleration: 8
   avoidancePriority: 50
   m_AngularSpeed: 120

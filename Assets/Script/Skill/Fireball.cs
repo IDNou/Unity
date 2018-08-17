@@ -58,6 +58,8 @@ public class Fireball : MonoBehaviour
         if (explodeEffect != null)
             explodeEffect.SetActive(true);
 
+        SoundManager.Instance.EFXPlaySound("Meteo");
+
         Vector3 vecBomPos = this.transform.position;
         vecBomPos.y = 0;
 
