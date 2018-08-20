@@ -59,7 +59,6 @@ public class PlayerAction : MonoBehaviour
         Impail.transform.rotation = Quaternion.Euler(new Vector3(-90.0f, this.transform.root.transform.eulerAngles.y - 90.0f, 0));
         Impail.GetComponentInChildren<Impail>().Master = this.transform.parent.gameObject;
         this.GetComponentInParent<Status>().MP -= 80;
-
     }
 
     private void PowerMeteo()

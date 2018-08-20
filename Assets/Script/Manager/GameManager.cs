@@ -219,7 +219,8 @@ public class GameManager : MonoBehaviour
             }
         }
 
-        if(Input.GetKeyDown(KeyCode.Alpha3))
+        //치트
+        if(Input.GetKeyDown(KeyCode.Alpha0))
         {
             SoundInstance.EFXPlaySound("ReceiveGold");
             iGold += 500;

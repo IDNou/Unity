@@ -41,7 +41,7 @@ public class FillMode : MonoBehaviour
             //}
         }
 
-        if(Player.GetComponent<Status>().Level == 1)
+        if(!EnableSkill && Player.GetComponent<Status>().Level == 1)
         {
             if(this.transform.parent.name == "Meteo")
             {
@@ -50,7 +50,16 @@ public class FillMode : MonoBehaviour
             }
         }
 
-        if(Player.GetComponent<Status>().Level == 6)
+        if (!EnableSkill && Player.GetComponent<Status>().Level == 3)
+        {
+            if (this.transform.parent.name == "Impail")
+            {
+                EnableSkill = true;
+                uiSp.fillAmount = 1.0f;
+            }
+        }
+
+        if (!EnableSkill && Player.GetComponent<Status>().Level == 6)
         {
             if (this.transform.parent.name == "PowerMeteo")
             {

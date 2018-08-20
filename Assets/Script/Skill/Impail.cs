@@ -24,31 +24,38 @@ public class Impail : MonoBehaviour
 
         if (this.transform.root.GetComponent<ParticleSystem>().isStopped)//fTime > deadTime)
         {
-            //foreach (GameObject go in test)
-            //{
-            //    if (go.GetComponent<Status>())
-            //    {
-            //        print(go.name);
-            //    }
-            //}
             fTime = 0;
             MonsterColliderList.Clear();
             Destroy(this.transform.root.gameObject);
-            //this.transform.root.gameobject.setactive(false);
         }
 
     }
 
     private void OnParticleCollision(GameObject other)
     {
-        if (!MonsterColliderList.Contains(other) && other.tag != "Player" && other.tag != "NaelTower" && other.tag != "UndeadTower" && other.tag != "NaelMinion")
+        if (Master.tag == "Player")
         {
-            if(other.GetComponent<Status>())
+            if (!MonsterColliderList.Contains(other) && other.tag != "Player" && other.tag != "NaelTower" && other.tag != "UndeadTower" && other.tag != "NaelMinion" && other.tag !="Tree")
             {
-                other.GetComponent<Status>().Marker = Master;
-                other.GetComponent<Status>().HP -= 100.0f;
+                if (other.GetComponent<Status>())
+                {
+                    other.GetComponent<Status>().Marker = Master;
+                    other.GetComponent<Status>().HP -= 100.0f;
+                }
+                MonsterColliderList.Add(other);
             }
-            MonsterColliderList.Add(other);
+        }
+        else
+        {
+            if (!MonsterColliderList.Contains(other) && other.tag != "Enermy" && other.tag != "NaelTower" && other.tag != "UndeadTower" && other.tag != "UndeadMinion" && other.tag != "Tree")
+            {
+                if (other.GetComponent<Status>())
+                {
+                    other.GetComponent<Status>().Marker = Master;
+                    other.GetComponent<Status>().HP -= 100.0f;
+                }
+                MonsterColliderList.Add(other);
+            }
         }
     }
 }

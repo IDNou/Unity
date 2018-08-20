@@ -40,6 +40,26 @@ public class ItemInven : MonoBehaviour
                 ItemCount.text = "";
             }
         }
+
+        if (ItemBox != null)
+        {
+            if (Input.GetKeyDown(KeyCode.Alpha1) && this.gameObject.name == "ItemBox1")
+            {
+                UseItem();
+            }
+            else if (Input.GetKeyDown(KeyCode.Alpha2) && this.gameObject.name == "ItemBox2")
+            {
+                UseItem();
+            }
+            else if (Input.GetKeyDown(KeyCode.Alpha3) && this.gameObject.name == "ItemBox3")
+            {
+                UseItem();
+            }
+            else if (Input.GetKeyDown(KeyCode.Alpha4) && this.gameObject.name == "ItemBox4")
+            {
+                UseItem();
+            }
+        }
     }
 
     public void OnClick()
@@ -48,63 +68,73 @@ public class ItemInven : MonoBehaviour
         {
             if (Input.GetMouseButtonUp(0))
             {
-                if (ItemBox.kind == itemkind.CONSUM)
-                {
-                    //회복템 효과를 게임매니저로 넘겨줘야한다.
-                    if (sPlayerInfo.HP < sPlayerInfo.MAXHP || sPlayerInfo.MP < sPlayerInfo.MAXMP)
-                    {
-                        if (ItemBox.name == "치즈" || ItemBox.name == "범위 체력 문서")
-                        {
-                            SoundManager.Instance.EFXPlaySound("치즈");
-                            sPlayerInfo.SendMessage("FastHeal", ItemBox.RecoveryHP);
-                            emptyItemBox();
-                        }
-                        else
-                        {
-                            SoundManager.Instance.EFXPlaySound("HealTarget");
-                            if (ItemBox.name == "체력")
-                            {
-                                sPlayerInfo.isHPHealing = true;
-                                sPlayerInfo.HPRecoveryMount = ItemBox.RecoveryHP;
-                            }
-                            else if (ItemBox.name == "마력")
-                            {
-                                sPlayerInfo.isMPHealing = true;
-                                sPlayerInfo.MPRecoveryMount = ItemBox.RecoveryMP;
-                            }
-                            if (--ItemBox.Count <= 0)
-                            {
-                                ItemBox.Count = 1;
-                                emptyItemBox();
-                            }
-                        }
-                    }
-                }
+                UseItem();
             }
-            else if(Input.GetMouseButtonUp(1))
+            else if(Input.GetMouseButtonUp(1) && this.GetComponent<UISprite>().spriteName != "Dark")
             {
-                //아이템 팔기
-                GameManager.Instance.nGold += (int)((float)ItemBox.price * 0.71f);
-                SoundManager.Instance.EFXPlaySound("ReceiveGold");
-                if (ItemBox.kind == itemkind.CONSUM)
+                SellItem();
+            }
+        }
+    }
+
+    public void UseItem()
+    {
+        if (ItemBox.kind == itemkind.CONSUM)
+        {
+            //회복템 효과를 게임매니저로 넘겨줘야한다.
+            if (sPlayerInfo.HP < sPlayerInfo.MAXHP || sPlayerInfo.MP < sPlayerInfo.MAXMP)
+            {
+                if (ItemBox.name == "치즈" || ItemBox.name == "범위 체력 문서")
                 {
-                    if(ItemBox.Count >1)
+                    SoundManager.Instance.EFXPlaySound("치즈");
+                    sPlayerInfo.SendMessage("FastHeal", ItemBox.RecoveryHP);
+                    emptyItemBox();
+                }
+                else
+                {
+                    SoundManager.Instance.EFXPlaySound("HealTarget");
+                    if (ItemBox.name == "체력")
                     {
-                        ItemBox.Count--;
+                        sPlayerInfo.isHPHealing = true;
+                        sPlayerInfo.HPRecoveryMount = ItemBox.RecoveryHP;
                     }
-                    else
+                    else if (ItemBox.name == "마력")
                     {
+                        sPlayerInfo.isMPHealing = true;
+                        sPlayerInfo.MPRecoveryMount = ItemBox.RecoveryMP;
+                    }
+                    if (--ItemBox.Count <= 0)
+                    {
+                        ItemBox.Count = 1;
                         emptyItemBox();
                     }
                 }
-                //장비 일때
-                else
-                {
-                    GameManager.Instance.MinusItemStat(ItemBox);
-                    emptyItemBox();
-
-                }
             }
+        }
+    }
+
+    public void SellItem()
+    {
+        //아이템 팔기
+        GameManager.Instance.nGold += (int)((float)ItemBox.price * 0.71f);
+        SoundManager.Instance.EFXPlaySound("ReceiveGold");
+        if (ItemBox.kind == itemkind.CONSUM)
+        {
+            if (ItemBox.Count > 1)
+            {
+                ItemBox.Count--;
+            }
+            else
+            {
+                emptyItemBox();
+            }
+        }
+        //장비 일때
+        else
+        {
+            GameManager.Instance.MinusItemStat(ItemBox);
+            emptyItemBox();
+
         }
     }
 

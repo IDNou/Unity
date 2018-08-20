@@ -22,6 +22,7 @@ public class Status : MonoBehaviour {
     public bool isMPHealing;
     public float HPRecoveryMount;
     public float MPRecoveryMount;
+    public float secondPerRecovery;
 
     private GameObject uiProgressBar;
     private GameObject myProgressBar;
@@ -78,6 +79,7 @@ public class Status : MonoBehaviour {
         isMPHealing = false;
         HPRecoveryMount = 0;
         MPRecoveryMount = 0;
+        secondPerRecovery = 5.0f;
 
         if (this.tag != "Tree") // 수정중
         {
@@ -175,7 +177,7 @@ public class Status : MonoBehaviour {
                 }
             }
 
-            if (CUREXP >= MAXEXP && Level <= 18)
+            if (CUREXP >= MAXEXP && Level < 18)
             {
                 LevelUP();
             }
@@ -211,7 +213,7 @@ public class Status : MonoBehaviour {
     private void SlowHeal()
     {
 
-        float healHp = Time.deltaTime * 5.0f; // 한 프레임 당 회복량 (초당 10회복)
+        float healHp = Time.deltaTime * secondPerRecovery; // 한 프레임 당 회복량 (초당 10회복)
 
         // 현재 남은 회복량이 한프레임 회복량 보다 작은 경우
         if(HP >= MAXHP || HP <= 0)
@@ -232,7 +234,7 @@ public class Status : MonoBehaviour {
 
     private void SlowMana()
     {
-        float healMp = Time.deltaTime * 5.0f; // 한 프레임 당 회복량 (초당 10회복)
+        float healMp = Time.deltaTime * secondPerRecovery; // 한 프레임 당 회복량 (초당 10회복)
 
         // 현재 남은 회복량이 한프레임 회복량 보다 작은 경우
         if (MP >= MAXMP || MP <= 0)
