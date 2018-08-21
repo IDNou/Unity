@@ -142,12 +142,12 @@ public class Status : MonoBehaviour {
                     if (GameObject.Find("Prod"))
                         GameObject.Find("Prod").GetComponent<Status>().CUREXP += EXP;
                 }
-                else if (this.tag == "Player" && !GameManager.Instance.isEnermyDie)
+                else if (this.tag == "Player" && !GameManager.Instance.isPlayerDie)
                 {
                     SoundManager.Instance.EFXPlaySound("HeroDies");
                     GameObject.Find("Akma").GetComponent<Status>().CUREXP += GameObject.Find("Prod").GetComponent<Status>().Level * 50;
                 }
-                else if (this.tag == "Akma" && !GameManager.Instance.isPlayerDie)
+                else if (this.tag == "Akma" && !GameManager.Instance.isEnermyDie)
                 {
                     GameObject.Find("Prod").GetComponent<Status>().CUREXP += GameObject.Find("Akma").GetComponent<Status>().Level * 50;
                 }
@@ -163,6 +163,11 @@ public class Status : MonoBehaviour {
                 {
                     if(this.GetComponent<FarMinionAnim>() && this.GetComponent<FarMinionAnim>().enabled)// 원거리
                     {
+                        if(this.tag == "UndeadMinion")
+                            SoundManager.Instance.EFXPlaySound("ShadeDeath1");
+                        else
+                            SoundManager.Instance.EFXPlaySound("FaerieDragonDeath1");
+
                         this.GetComponentInChildren<Animation>().CrossFade(this.GetComponent<FarMinionAnim>().Die.name);
                         myProgressBar.gameObject.SetActive(false);
                         foreach (SphereCollider box in this.GetComponents<SphereCollider>())
@@ -175,6 +180,11 @@ public class Status : MonoBehaviour {
                     }
                     else if(this.GetComponent<MinionContol>() && this.GetComponent<MinionContol>().enabled)
                     {
+                        if (this.tag == "UndeadMinion")
+                            SoundManager.Instance.EFXPlaySound("GruntDeath");
+                        else
+                            SoundManager.Instance.EFXPlaySound("FootmanDeath");
+
                         this.GetComponentInChildren<Animator>().SetBool("isDie", true);
                         myProgressBar.gameObject.SetActive(false);
                         foreach (SphereCollider box in this.GetComponents<SphereCollider>())
@@ -191,6 +201,7 @@ public class Status : MonoBehaviour {
                     if (this.tag == "Player" && !GameManager.Instance.isPlayerDie)
                     {
                         this.GetComponentInChildren<Animation>().CrossFade(this.GetComponent<PlayerControl>().DEATH.name);
+                        SoundManager.Instance.EFXPlaySound("BloodElfSorcerorDeath");
                         myProgressBar.gameObject.SetActive(false);
                         this.GetComponent<NavMeshAgent>().isStopped = true;
                         this.GetComponent<BoxCollider>().enabled = false;
@@ -201,6 +212,7 @@ public class Status : MonoBehaviour {
                     else if (this.tag == "Enermy" && !GameManager.Instance.isEnermyDie)
                     {
                         this.GetComponentInChildren<Animator>().SetBool("isDie", true);
+                        SoundManager.Instance.EFXPlaySound("HeroLichDeath1");
                         myProgressBar.gameObject.SetActive(false);
                         this.GetComponent<NavMeshAgent>().isStopped = true;
                         this.GetComponent<BoxCollider>().enabled = false;
