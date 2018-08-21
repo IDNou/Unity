@@ -75,7 +75,7 @@ public class FarMinionAnim : MonoBehaviour
                 anim.CrossFade(Move.name);
             }
 
-            if (Enermy.activeSelf == false)
+            if (Enermy.activeSelf == false || Enermy.GetComponent<Status>().HP <= 0)
             {
                 Enermy = null;
                 SetDest(Dest.transform.position);

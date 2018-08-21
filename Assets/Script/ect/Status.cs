@@ -106,7 +106,7 @@ public class Status : MonoBehaviour {
 
         if (isPlaying)
         {
-            if (HP <= 0.0f)
+            if (HP <= 0.0f && this.GetComponent<NavMeshAgent>().enabled) //죽을때
             {
                 if (Marker && Marker.name == "Prod" && this.tag != "Tree")
                 {
@@ -132,47 +132,80 @@ public class Status : MonoBehaviour {
                     myGoldText.text = "+"+ drapGold + "Gold";
                 }
 
-                if (this.tag == "NaelMinion")
+                if (this.tag == "NaelMinion" && !GameManager.Instance.isEnermyDie)
                 {
                     if (GameObject.Find("Akma"))
                         GameObject.Find("Akma").GetComponent<Status>().CUREXP += EXP;
                 }
-                else if (this.tag == "UndeadMinion")
+                else if (this.tag == "UndeadMinion" && !GameManager.Instance.isPlayerDie)
                 {
                     if (GameObject.Find("Prod"))
                         GameObject.Find("Prod").GetComponent<Status>().CUREXP += EXP;
                 }
-                else if (this.tag == "Player")
+                else if (this.tag == "Player" && !GameManager.Instance.isEnermyDie)
                 {
                     SoundManager.Instance.EFXPlaySound("HeroDies");
                     GameObject.Find("Akma").GetComponent<Status>().CUREXP += GameObject.Find("Prod").GetComponent<Status>().Level * 50;
                 }
-                else if (this.tag == "Akma")
+                else if (this.tag == "Akma" && !GameManager.Instance.isPlayerDie)
                 {
                     GameObject.Find("Prod").GetComponent<Status>().CUREXP += GameObject.Find("Akma").GetComponent<Status>().Level * 50;
                 }
 
-                if (this.tag == "NaelMinion" || this.tag == "UndeadMinion" || this.tag == "NaelTower" || this.tag == "UndeadTower") // 수정중
+                if (this.tag == "NaelTower" || this.tag == "UndeadTower") // 수정중
                 {
                     this.gameObject.SetActive(false);
                     myProgressBar.gameObject.SetActive(false);
                     Destroy(this.gameObject, 2);
                     Destroy(myProgressBar.gameObject, 2);
                 }
+                else if(this.tag == "UndeadMinion" || this.tag == "NaelMinion")
+                {
+                    if(this.GetComponent<FarMinionAnim>() && this.GetComponent<FarMinionAnim>().enabled)// 원거리
+                    {
+                        this.GetComponentInChildren<Animation>().CrossFade(this.GetComponent<FarMinionAnim>().Die.name);
+                        myProgressBar.gameObject.SetActive(false);
+                        foreach (SphereCollider box in this.GetComponents<SphereCollider>())
+                        {
+                            box.enabled = false;
+                        }
+                        this.GetComponent<NavMeshAgent>().enabled = false;
+                        this.GetComponent<FarMinionAnim>().enabled = false;
+                        StartCoroutine(AnimDie(this.GetComponent<FarMinionAnim>().Die.length + 3.0f));
+                    }
+                    else if(this.GetComponent<MinionContol>() && this.GetComponent<MinionContol>().enabled)
+                    {
+                        this.GetComponentInChildren<Animator>().SetBool("isDie", true);
+                        myProgressBar.gameObject.SetActive(false);
+                        foreach (SphereCollider box in this.GetComponents<SphereCollider>())
+                        {
+                            box.enabled = false;
+                        }
+                        this.GetComponent<NavMeshAgent>().enabled = false;
+                        this.GetComponent<MinionContol>().enabled = false;
+                        StartCoroutine(AnimDie(this.GetComponentInChildren<Animator>().GetCurrentAnimatorStateInfo(0).length + 3.0f));
+                    }
+                }
                 else
                 {
-                    if (this.tag == "Player")
+                    if (this.tag == "Player" && !GameManager.Instance.isPlayerDie)
                     {
-                        this.gameObject.SetActive(false);
+                        this.GetComponentInChildren<Animation>().CrossFade(this.GetComponent<PlayerControl>().DEATH.name);
                         myProgressBar.gameObject.SetActive(false);
+                        this.GetComponent<NavMeshAgent>().isStopped = true;
+                        this.GetComponent<BoxCollider>().enabled = false;
                         GameManager.Instance.isPlayerDie = true;
+                        StartCoroutine(AnimDie(this.GetComponent<PlayerControl>().DEATH.length + 3.0f));
                         //프로그래스바 설정해줘야한다
                     }
-                    else if (this.tag == "Enermy")
+                    else if (this.tag == "Enermy" && !GameManager.Instance.isEnermyDie)
                     {
-                        this.gameObject.SetActive(false);
+                        this.GetComponentInChildren<Animator>().SetBool("isDie", true);
                         myProgressBar.gameObject.SetActive(false);
+                        this.GetComponent<NavMeshAgent>().isStopped = true;
+                        this.GetComponent<BoxCollider>().enabled = false;
                         GameManager.Instance.isEnermyDie = true;
+                        StartCoroutine(AnimDie(this.GetComponentInChildren<Animator>().GetCurrentAnimatorStateInfo(0).length + 3.0f));
                     }
                 }
             }
@@ -275,5 +308,18 @@ public class Status : MonoBehaviour {
     private void SetActiveMyProgressBar()
     {
         myProgressBar.gameObject.SetActive(true);
+    }
+
+    IEnumerator AnimDie(float time)
+    {
+        yield return new WaitForSeconds(time);
+
+        this.gameObject.SetActive(false);
+
+        if (this.tag == "UndeadMinion" || this.tag == "NaelMinion")
+        {
+            Destroy(this.gameObject, 2);
+            Destroy(myProgressBar.gameObject, 2);
+        }
     }
 }

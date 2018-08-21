@@ -18,11 +18,14 @@ public class Fireball : MonoBehaviour
 
     protected Rigidbody rgbd;
 
+    public bool isJustOne;
+
     public GameObject Master;
 
     public void Awake()
     {
         rgbd = GetComponent<Rigidbody>();
+        isJustOne = false;
     }
 
     public void Start()
@@ -46,35 +49,40 @@ public class Fireball : MonoBehaviour
 
     public void OnCollisionEnter(Collision col)
     {
-        rgbd.Sleep();
-        if (fieryEffect != null)
+        if (!isJustOne)
         {
-            StopParticleSystem(fieryEffect);
-        }
-        if (smokeEffect != null)
-        {
-            StopParticleSystem(smokeEffect);
-        }
-        if (explodeEffect != null)
-            explodeEffect.SetActive(true);
+            isJustOne = true;
 
-        SoundManager.Instance.EFXPlaySound("Meteo");
-
-        Vector3 vecBomPos = this.transform.position;
-        vecBomPos.y = 0;
-
-        Collider[] colliders;
-        colliders = Physics.OverlapSphere(Destination, this.GetComponent<SphereCollider>().radius);
-        foreach (Collider coll in colliders)
-        {
-            if(coll.tag == "UndeadMinion" || coll.tag == "UndeadTower" || coll.tag == "Enermy")
+            rgbd.Sleep();
+            if (fieryEffect != null)
             {
-                coll.gameObject.GetComponent<Status>().Marker = Master;
-                coll.gameObject.GetComponent<Status>().HP -= ATK;
+                StopParticleSystem(fieryEffect);
             }
-        }
+            if (smokeEffect != null)
+            {
+                StopParticleSystem(smokeEffect);
+            }
+            if (explodeEffect != null)
+                explodeEffect.SetActive(true);
 
-        this.GetComponent<SphereCollider>().enabled = false;
+            SoundManager.Instance.EFXPlaySound("Meteo");
+
+            Vector3 vecBomPos = this.transform.position;
+            vecBomPos.y = 0;
+
+            Collider[] colliders;
+            colliders = Physics.OverlapSphere(Destination, this.GetComponent<SphereCollider>().radius);
+            foreach (Collider coll in colliders)
+            {
+                if (coll.tag == "UndeadMinion" || coll.tag == "UndeadTower" || coll.tag == "Enermy")
+                {
+                    coll.gameObject.GetComponent<Status>().Marker = Master;
+                    coll.gameObject.GetComponent<Status>().HP -= ATK;
+                }
+            }
+
+            this.GetComponent<SphereCollider>().enabled = false;
+        }
     }
 
     public void StopParticleSystem(GameObject g)

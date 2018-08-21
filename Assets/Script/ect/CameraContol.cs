@@ -28,34 +28,34 @@ public class CameraContol : MonoBehaviour
             else
             {
                 //한계를 정해놔야함 안그러면 밑도끝도없이 이동함
-                //if (Input.mousePosition.x <= 0)
-                //{
-                //    if (Camera.main.transform.position.x > -8.5f)
-                //        Camera.main.transform.Translate(Vector3.left * CameraSpeed * Time.deltaTime);
-                //}
-                //if (Input.mousePosition.y <= 0)
-                //{
-                //    Vector3 pos = this.transform.position;
-                //    if (pos.z > -8.5f)
-                //    {
-                //        pos.z += -CameraSpeed * Time.deltaTime;
-                //        Camera.main.transform.position = pos;
-                //    }
-                //}
-                //if (Input.mousePosition.x >= Screen.width)
-                //{
-                //    if (Camera.main.transform.position.x < 45.0f)
-                //        Camera.main.transform.Translate(Vector3.left * -CameraSpeed * Time.deltaTime);
-                //}
-                //if (Input.mousePosition.y >= Screen.height)
-                //{
-                //    Vector3 pos = this.transform.position;
-                //    if (pos.z < 30.0f)
-                //    {
-                //        pos.z += CameraSpeed * Time.deltaTime;
-                //        Camera.main.transform.position = pos;
-                //    }
-                //}
+                if (Input.mousePosition.x <= 0)
+                {
+                    if (Camera.main.transform.position.x > -8.5f)
+                        Camera.main.transform.Translate(Vector3.left * CameraSpeed * Time.deltaTime);
+                }
+                if (Input.mousePosition.y <= 0)
+                {
+                    Vector3 pos = this.transform.position;
+                    if (pos.z > -8.5f)
+                    {
+                        pos.z += -CameraSpeed * Time.deltaTime;
+                        Camera.main.transform.position = pos;
+                    }
+                }
+                if (Input.mousePosition.x >= Screen.width-10)
+                {
+                    if (Camera.main.transform.position.x < 45.0f)
+                        Camera.main.transform.Translate(Vector3.left * -CameraSpeed * Time.deltaTime);
+                }
+                if (Input.mousePosition.y >= Screen.height)
+                {
+                    Vector3 pos = this.transform.position;
+                    if (pos.z < 30.0f)
+                    {
+                        pos.z += CameraSpeed * Time.deltaTime;
+                        Camera.main.transform.position = pos;
+                    }
+                }
 
                 if (Input.GetKey(KeyCode.UpArrow))
                 {

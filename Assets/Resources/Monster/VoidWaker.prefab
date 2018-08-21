@@ -396,7 +396,7 @@ Animation:
   - {fileID: 7400000, guid: 87aca181203408543942305a65e47c0b, type: 3}
   - {fileID: 7400000, guid: f5764b23835f9a9419abb7b098331a06, type: 2}
   - {fileID: 7400000, guid: 8af2259933ccf2e47b0a9493f3516fc4, type: 3}
-  - {fileID: 7400000, guid: 3e63abeab47efea44a9868d7d769abcf, type: 3}
+  - {fileID: 7400000, guid: 94c51b57e91b2774585815fc84fa32c8, type: 2}
   m_WrapMode: 0
   m_PlayAutomatically: 1
   m_AnimatePhysics: 0
@@ -426,10 +426,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2a2f0409820332d4db42f02e7c9f7085, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MaxHP: 120
+  Level: 0
+  HP: 0
+  MAXHP: 0
+  MP: 0
+  MAXMP: 0
   ATK: 30
   DEF: 10
+  SPD: 0
+  EXP: 0
+  CUREXP: 0
+  MAXEXP: 0
   Marker: {fileID: 0}
+  isHPHealing: 0
+  isMPHealing: 0
+  HPRecoveryMount: 0
+  MPRecoveryMount: 0
+  secondPerRecovery: 0
 --- !u!114 &114950672198420666
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -444,7 +457,7 @@ MonoBehaviour:
   Idle: {fileID: 7400000, guid: 6098175c4d4a46343be4d6857847330b, type: 3}
   Attack: {fileID: 7400000, guid: f5764b23835f9a9419abb7b098331a06, type: 2}
   Move: {fileID: 7400000, guid: 87aca181203408543942305a65e47c0b, type: 3}
-  Die: {fileID: 7400000, guid: 3e63abeab47efea44a9868d7d769abcf, type: 3}
+  Die: {fileID: 7400000, guid: 94c51b57e91b2774585815fc84fa32c8, type: 2}
   Dest: {fileID: 0}
   Enermy: {fileID: 0}
 --- !u!135 &135651722714361086

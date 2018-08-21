@@ -101,7 +101,7 @@ public class MinionContol : MonoBehaviour
                 anim.SetBool("Attack", false);
             }
 
-            if (Enermy.activeSelf == false)
+            if (Enermy.activeSelf == false || Enermy.GetComponent<Status>().HP <= 0)
             {
                 Enermy = null;
                 anim.SetBool("Attack", false);

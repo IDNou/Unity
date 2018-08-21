@@ -251,6 +251,9 @@ public class AkmaControl : MonoBehaviour
                     this.transform.position = Dest;
                     navMesh.ResetPath();
                     anim.SetFloat("isMove", 0);
+                    anim.SetBool("isSkill1", false);
+                    anim.SetBool("isSkill2", false);
+                    anim.SetBool("isAttack", false);
 
                     this.GetComponent<Status>().isHPHealing = true;
                     this.GetComponent<Status>().secondPerRecovery = 40.0f;
@@ -332,7 +335,7 @@ public class AkmaControl : MonoBehaviour
 
         if (Enermy)
         {
-            if (Enermy.activeSelf == false)
+            if (Enermy.activeSelf == false || Enermy.GetComponent<Status>().HP <= 0)
             {
                 Enermy = null;
                 isAttack = false;
@@ -412,5 +415,6 @@ public class AkmaControl : MonoBehaviour
         isGoAttack = false; // 미니언 있으니 공격해도된다
         isAttackCharge = true;
         navMesh.isStopped = true;
+        isImmediatelyEscape = false;
     }
 }

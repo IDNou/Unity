@@ -157,6 +157,7 @@ public class GameManager : MonoBehaviour
                 //Camera.main.transform.position = new Vector3(45, 5, -4);
                 PlayerStatus.GetComponent<PlayerControl>().enabled = true;
                 PlayerStatus.GetComponent<NavMeshAgent>().enabled = true;
+                PlayerStatus.GetComponent<BoxCollider>().enabled = true;
                 Camera.main.gameObject.GetComponent<CameraContol>().isControlStop = true;
                 PlayerStatus.SendMessage("FullStatus");
                 isPlayerDie = false;
@@ -168,7 +169,7 @@ public class GameManager : MonoBehaviour
         {
             enermyRegenTime += Time.deltaTime;
 
-            if (enermyRegenTime > 5)
+            if (enermyRegenTime > EnermyStatus.Level + 5)
             {
                 EnermyStatus.gameObject.SetActive(true);
                 EnermyStatus.GetComponent<AkmaControl>().SendMessage("ResetBool");
@@ -179,6 +180,7 @@ public class GameManager : MonoBehaviour
                 //Camera.main.transform.position = new Vector3(-5, 5, 27);
                 EnermyStatus.GetComponent<AkmaControl>().enabled = true;
                 EnermyStatus.GetComponent<NavMeshAgent>().enabled = true;
+                EnermyStatus.GetComponent<BoxCollider>().enabled = true;
                 EnermyStatus.SendMessage("FullStatus");
                 isEnermyDie = false;
                 enermyRegenTime = 0;
