@@ -143,7 +143,7 @@ MonoBehaviour:
     m_RotationOrder: 4
   ignoreTimeScale: 1
   delay: 0
-  duration: 1
+  duration: 2
   steeperCurves: 0
   tweenGroup: 1
   onFinished: []
@@ -197,7 +197,7 @@ MonoBehaviour:
     m_RotationOrder: 4
   ignoreTimeScale: 1
   delay: 0
-  duration: 1
+  duration: 2
   steeperCurves: 0
   tweenGroup: 1
   onFinished: []

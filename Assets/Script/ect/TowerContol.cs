@@ -57,7 +57,7 @@ public class TowerContol : MonoBehaviour
                 fireball.GetComponent<Attack>().ATK = this.GetComponent<Status>().ATK;
                 fireball.GetComponent<Attack>().fSpeed = 5.0f;
                 fireball.GetComponent<Attack>().Master = this.gameObject;
-                SoundManager.Instance.EFXPlaySound("SearingArrowTarget" + Random.Range(0, 4));
+                SoundManager.Instance.EFXPlaySound("SearingArrowTarget" + Random.Range(1, 4));
             }
 
             if (!Enermy.activeSelf || Enermy.GetComponent<Status>().HP <= 0|| Vector3.Distance(Enermy.transform.position, this.transform.position) > this.GetComponent<SphereCollider>().radius)

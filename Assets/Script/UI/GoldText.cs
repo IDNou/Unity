@@ -10,7 +10,7 @@ public class GoldText : MonoBehaviour
     private Camera uiCamera;
 
     private Vector3 GoldTextPos;
-    private Vector3 screenPos;
+    //private Vector3 screenPos;
 
     private void Start()
     {

@@ -165,7 +165,7 @@ public class AkmaControl : MonoBehaviour
                         }
                     }
 
-                    if (Vector3.Distance(this.transform.position, Dest) <= 0.2f) // 목적지에 도착했는가?
+                    if (Vector3.Distance(this.transform.position, Dest) <= 0.3f) // 목적지에 도착했는가?
                     {
                         isMove = false;
                         isAttack = false;
@@ -341,6 +341,10 @@ public class AkmaControl : MonoBehaviour
                 isAttack = false;
                 isMove = true;
                 isGoAttack = true;
+                anim.SetFloat("isMove", 0);
+                anim.SetBool("isSkill1", false);
+                anim.SetBool("isSkill2", false);
+                anim.SetBool("isAttack", false);
             }
             else
             {
@@ -385,6 +389,9 @@ public class AkmaControl : MonoBehaviour
                     isMove = true;
                     isGoAttack = true;
                     isAbsoluteForward = true;
+                    anim.SetBool("isSkill1", false);
+                    anim.SetBool("isSkill2", false);
+                    anim.SetBool("isAttack", false);
                 }
             }
         }
